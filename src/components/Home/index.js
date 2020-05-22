@@ -7,7 +7,7 @@ import Messages from '../Messages';
 const HomePage = () => (
   <div>
     <h1>Home Page</h1>
-    <p>The Home Page is accessible by every signed in user.</p>
+    <p>This Page is only accessible after signing in by the user.</p>
 
     <Messages />
   </div>
