@@ -1,12 +1,44 @@
 import React from "react"
+import { useState, useEffect } from "react"
 import View from "./View"
 import { getUser } from "../utils/auth"
+import { useFirebase} from "gatsby-plugin-firebase"
 
 const Profile = () => {
   const user = getUser();
   const { displayName, email, emailVerified } = user;
   const accessToken = user.stsTokenManager.accessToken; 
 
+  //const [firebase, setFirebase] = useState();
+
+  useFirebase(firebase => {
+    //setFirebase(firebase);
+    console.log(firebase);
+    console.log(firebase.database());
+    console.log(firebase.firestore());
+
+    /* Add Example */
+    var messageListRef = firebase.database().ref('/messages/');
+    var newMessageRef = messageListRef.push();
+    newMessageRef.set({
+    'userId': 'testuser',
+    'text': 'The Analytical Engine weaves algebraical patterns just as the Jacquard loom weaves flowers and leaves.'
+    });
+    // We've appended a new message to the message_list location.
+    var path = newMessageRef.toString();
+    console.log("path = "+path);
+    /* Add Example */
+
+    /* List Example */
+    firebase.database().ref('/messages/').once('value').then(function(snapshot) {
+        //var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+        console.log("***************")
+        console.log(snapshot.val())
+    });
+    /* List Example */
+        
+  }, [])
+  
   return (
     <View title="Your Profile">
         <div>

@@ -3,6 +3,7 @@ import { Link } from "gatsby"
 import Layout from "../components/Layout"
 import View from "../components/View"
 import Status from "../components/Status"
+import Projects from "../components/Projects"
 import { getUser, isLoggedIn} from "../utils/auth"
 
 const Index = () => {
@@ -14,12 +15,12 @@ const Index = () => {
     <Status />
     <View title="Welcome to Hyper" className="items-center">
     {isLoggedIn() &&
-      <div>{displayName} [{email}]</div>
+      <Projects />
     }
 
     {!isLoggedIn() && 
       <button class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-          <Link to="/app/profile">Login with Firebase</Link>
+          <Link to="/">Login with Firebase</Link>
         </button>
     }
         

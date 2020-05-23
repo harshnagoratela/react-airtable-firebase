@@ -14,7 +14,7 @@ const Login = () => {
   }, [])
 
   if (isLoggedIn()) {
-    navigate(`/app/profile`)
+    navigate(`/`)
   }
 
   function getUiConfig(auth) {
@@ -24,11 +24,11 @@ const Login = () => {
         auth.GoogleAuthProvider.PROVIDER_ID,
         auth.EmailAuthProvider.PROVIDER_ID
       ],
-      // signInSuccessUrl: '/app/profile',
+      // signInSuccessUrl: '/',
       callbacks: {
         signInSuccessWithAuthResult: (result) => {
           setUser(result.user);
-          navigate('/app/profile');
+          navigate('/');
         }
       }
     };
@@ -36,7 +36,7 @@ const Login = () => {
 
   return (
     <View title="Log In">
-      <p>Please sign-in to access to the private route:</p>
+      <p>Please sign-in to access the projects:</p>
       {firebase && <StyledFirebaseAuth uiConfig={getUiConfig(firebase.auth)} firebaseAuth={firebase.auth()}/>}
     </View>
   );

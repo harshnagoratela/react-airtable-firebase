@@ -3,7 +3,7 @@ var plugins = [{
       options: {"plugins":[]},
     },{
       plugin: require('/workspace/react-airtable-firebase/node_modules/gatsby-plugin-firebase/gatsby-ssr'),
-      options: {"plugins":[],"features":{"auth":true,"database":true,"firestore":false,"storage":false,"messaging":false,"functions":false,"performance":false}},
+      options: {"plugins":[],"features":{"auth":true,"database":true,"firestore":true,"storage":false,"messaging":false,"functions":false,"performance":false}},
     }]
 // During bootstrap, we write requires at top of this file which looks like:
 // var plugins = [

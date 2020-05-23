@@ -18,7 +18,7 @@ module.exports = {
         features: {
           auth: true,
           database: true,
-          firestore: false,
+          firestore: true,
           storage: false,
           messaging: false,
           functions: false,
