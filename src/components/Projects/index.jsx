@@ -50,7 +50,7 @@ const Projects = () => {
                         <p className="mb-4 text-xs text-gray-600">{project.tableName}</p>
                     </div>
                     <div className="flex justify-end mt-4">
-                        <Link to={`/${user.uid}/${project.slug}`} className="text-xl font-medium text-indigo-500">See Public View...</Link>
+                        <Link to={`/app/${user.uid}/project/${project.slug}`} className="text-xl font-medium text-indigo-500">See Public View...</Link>
                     </div>
                 </div>
             ))}
