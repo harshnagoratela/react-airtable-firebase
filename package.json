@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "author": "HG",
   "dependencies": {
+    "airtable": "^0.8.1",
     "dotenv-webpack": "^1.7.0",
     "firebase": "^7.5.0",
     "gatsby": "^2.18.4",
@@ -15,8 +16,8 @@
     "prop-types": "^15.6.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
-    "react-helmet": "^5.2.0",
     "react-firebaseui": "^4.0.0",
+    "react-helmet": "^5.2.0",
     "tailwindcss": "^1.0.5"
   },
   "keywords": [
