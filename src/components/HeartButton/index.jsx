@@ -1,20 +1,30 @@
-import React from "react"
+import React, { useState, useEffect } from 'react';
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import './hearbutton.styles.css'
+
 class HeartButton extends React.Component {
+
     state = {
-        likes: 0
+        likes: this.props.currentVotes || 0,
+        liked: false
     };
 
     addLike = () => {
-        let newCount = this.state.likes + 1;
-        this.setState({
-            likes: newCount
-        });
+        if(this.state.liked) return;// allow only one like per visitor per item
+
+        let newCount = this.state.likes + 1;        
+
+        this.props.firebase
+          .database()
+          .ref()
+          .child(`users/${this.props.userid}/projects/${this.props.slug}/votes/${this.props.id}`)
+          .set(newCount)
+          .then(()=>{this.setState({likes: newCount, liked: true}); console.log("Upvote registered for "+this.props.id+" with '"+this.state.likes+"'")});   
     };
 
     render() {
         const likes = this.state.likes;
+
         return (
             <div>
                 <button
@@ -30,8 +40,6 @@ class HeartButton extends React.Component {
                     }
                     {" "}{likes}
                 </button>
-                    
-                    
             </div>
         );
     }

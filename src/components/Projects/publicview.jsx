@@ -6,46 +6,58 @@ import HeartButton from '../../components/HeartButton'
 const ProjectPublicView = props => {
 
     const [records, setRecords] = useState([]);
+    const [votes, setVotes] = useState([]);
     const [keys, setKeys] = useState([]);
     const [error, setError] = useState("");
     const [title, setTitle] = useState("");
+    const [fb, setFb] = useState();
 
     useFirebase(firebase => {
+        setFb(firebase);
         firebase
-            .database()
-            .ref(`users/${props.userid}/projects/${props.slug}`)
-            .once("value")
-            .then(snapshot => {
-                const snapshotVal = snapshot.val();
-                console.log(snapshotVal)
-                console.log(snapshotVal.apiKey)
-                if (!snapshotVal) { setError("ERROR: Unable to find Project Details"); }
-                if (!snapshotVal.apiKey) { setError("ERROR: Unable to find 'API KEY' in Project Details"); }
-                if (!snapshotVal.baseId) { setError("ERROR: Unable to find 'BASE ID' in Project Details"); }
-                if (!snapshotVal.tableName) { setError("ERROR: Unable to find 'TABLE NAME' in Project Details"); }
+        .database()
+        .ref(`users/${props.userid}/projects/${props.slug}`)
+        .once("value")
+        .then(snapshot => {
+            const snapshotVal = snapshot.val();
+            console.log(snapshotVal)
+            if (!snapshotVal) { setError("ERROR: Unable to find Project Details"); }
+            if (!snapshotVal.apiKey) { setError("ERROR: Unable to find 'API KEY' in Project Details"); }
+            if (!snapshotVal.baseId) { setError("ERROR: Unable to find 'BASE ID' in Project Details"); }
+            if (!snapshotVal.tableName) { setError("ERROR: Unable to find 'TABLE NAME' in Project Details"); }
 
-                if (snapshotVal && snapshotVal.apiKey && snapshotVal.baseId && snapshotVal.tableName) {
-                    setTitle(snapshotVal.title);
+            if (snapshotVal && snapshotVal.apiKey && snapshotVal.baseId && snapshotVal.tableName) {
+                setTitle(snapshotVal.title);
 
-                    const base = new Airtable({ apiKey: snapshotVal.apiKey }).base(snapshotVal.baseId);
+                const base = new Airtable({ apiKey: snapshotVal.apiKey }).base(snapshotVal.baseId);
 
-                    base(snapshotVal.tableName).select({ view: 'Grid view' })
-                        .eachPage(
-                            (records, fetchNextPage) => {
-                                setRecords(records);
-                                console.log("***** Found '" + records.length + "' records from Airtable");
-                                //getting the keys from the first record
-                                console.log(records)
-                                if (records.length > 0) {
-                                    console.log(Object.keys(records[0].fields))
-                                    setKeys(Object.keys(records[0].fields))
-                                }
-                                fetchNextPage();
+                base(snapshotVal.tableName).select({ view: 'Grid view' })
+                    .eachPage(
+                        (records, fetchNextPage) => {
+                            setRecords(records);
+                            console.log("***** Found '" + records.length + "' records from Airtable");
+                            //getting the keys from the first record
+                            console.log(records)
+                            if (records.length > 0) {
+                                setKeys(Object.keys(records[0].fields))
                             }
-                        );
+                            fetchNextPage();
+                        }
+                    );
+            }
+        });
 
-                }
-            });
+        //getting votes data
+        firebase
+        .database()
+        .ref(`users/${props.userid}/projects/${props.slug}/votes`)
+        .once("value")
+        .then(snapshot => {
+            const snapshotVal = snapshot.val();
+            console.log("******* Votes data")
+            console.log(snapshotVal)  
+            if(snapshotVal) setVotes(snapshotVal);
+        });
     }, [])
 
     useEffect(() => {
@@ -65,7 +77,7 @@ const ProjectPublicView = props => {
                             <h2 className="text-xl font-semibold text-gray-800">{record.fields["Title"]}</h2>
                             <p className="text-gray-600">{record.fields["Subtitle"]}</p>
                             <p className="text-left"><a href={record.fields["URL"]} target="_blank" className="text-blue-500">Visit Site</a></p>
-                            <HeartButton id={index} />
+                            <HeartButton id={record.id} firebase={fb} userid={props.userid} currentVotes={votes[record.id]} slug={props.slug} />
                         </div>
                     </div>
                 </div>
