@@ -6,7 +6,7 @@ class HeartButton extends React.Component {
 
     state = {
         likes: this.props.currentVotes || 0,
-        liked: false
+        liked: !!localStorage.getItem(this.props.id)
     };
 
     addLike = () => {
@@ -19,17 +19,26 @@ class HeartButton extends React.Component {
           .ref()
           .child(`users/${this.props.userid}/projects/${this.props.slug}/votes/${this.props.id}`)
           .set(newCount)
-          .then(()=>{this.setState({likes: newCount, liked: true}); console.log("Upvote registered for "+this.props.id+" with '"+this.state.likes+"'")});   
+          .then(()=>{
+              this.setState({likes: newCount, liked: true}); 
+              localStorage.setItem(this.props.id, this.state.liked); 
+              console.log("Upvote registered for "+this.props.id+" with '"+this.state.likes+"'");
+            });   
     };
 
     render() {
         const likes = this.state.likes;
+        const liked = this.state.liked;
+        let bgColor = "transparent";
+        if(liked) bgColor = "aliceblue";
 
         return (
             <div>
                 <button
                     id={this.props.id}
                     className="button"
+                    disabled={liked}
+                    style={{ backgroundColor: bgColor }}
                     onClick={this.addLike}
                 >
                     {likes <= 0 &&
