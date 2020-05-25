@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Airtable from 'airtable';
 import { useFirebase } from "gatsby-plugin-firebase"
+import HeartButton from '../../components/HeartButton'
 
 const ProjectPublicView = props => {
 
     const [records, setRecords] = useState([]);
     const [keys, setKeys] = useState([]);
     const [error, setError] = useState("");
+    const [title, setTitle] = useState("");
 
     useFirebase(firebase => {
         firebase
@@ -23,9 +25,7 @@ const ProjectPublicView = props => {
                 if (!snapshotVal.tableName) { setError("ERROR: Unable to find 'TABLE NAME' in Project Details"); }
 
                 if (snapshotVal && snapshotVal.apiKey && snapshotVal.baseId && snapshotVal.tableName) {
-                    let API_KEY = 'keyiReX7u7VyXrBCS'
-                    let BASE_ID = 'appc9HtYkOd4dN8in'
-                    let TABLE_NAME = 'SampleData'
+                    setTitle(snapshotVal.title);
 
                     const base = new Airtable({ apiKey: snapshotVal.apiKey }).base(snapshotVal.baseId);
 
@@ -54,7 +54,7 @@ const ProjectPublicView = props => {
 
     return (
         <div className="App">
-            <h1 className="text-center text-3xl underline px-2 py-3">Products View</h1>
+            <h1 className="text-center text-3xl underline px-2 py-3">Products View - {title}</h1>
 
             {records.length > 0 && records.map((record, index) =>
                 <div key={index} className="flex w-3/4 m-5 bg-white shadow-lg rounded-lg mx-auto overflow-hidden">
@@ -65,6 +65,7 @@ const ProjectPublicView = props => {
                             <h2 className="text-xl font-semibold text-gray-800">{record.fields["Title"]}</h2>
                             <p className="text-gray-600">{record.fields["Subtitle"]}</p>
                             <p className="text-left"><a href={record.fields["URL"]} target="_blank" className="text-blue-500">Visit Site</a></p>
+                            <HeartButton id={index} />
                         </div>
                     </div>
                 </div>

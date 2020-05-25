@@ -50,7 +50,7 @@ const Projects = () => {
                         <p className="mb-4 text-xs text-gray-600">{project.tableName}</p>
                     </div>
                     <div className="flex justify-end mt-4">
-                        <Link to={`/app/${user.uid}/project/${project.slug}`} target="_blank" className="text-xl font-medium text-indigo-500">See Public View...</Link>
+                        <Link to={`/public/${user.uid}/project/${project.slug}`} target="_blank" className="text-xl font-medium text-indigo-500">See Public View...</Link>
                     </div>
                 </div>
             ))}
@@ -59,8 +59,8 @@ const Projects = () => {
                     <div className="flex">
                         <svg className="h-6 w-6 text-blue-800 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" /></svg>
                         <div>
-                            <p className="font-bold">No Projects Found !!</p>
-                            <p className="text-sm">Please create projects from Top Menu options.</p>
+                            <p className="font-bold">No Projects Found OR Projects are loading !!</p>
+                            <p className="text-sm">You can create new projects from top menu options.</p>
                         </div>
                     </div>
                 </div>

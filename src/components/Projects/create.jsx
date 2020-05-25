@@ -36,7 +36,7 @@ const ProjectCreate = () => {
     return (
         <View title="">
             <form className="form bg-white p-6 my-10 relative">               
-                <div className="icon bg-blue-600 text-white w-6 h-6 absolute flex items-center justify-center p-5" style={{left:"-40px"}}><i className="fal fa-phone-volume fa-fw text-2xl transform -rotate-45"></i></div>
+                <div className="icon bg-blue-600 text-white text-3xl w-6 h-6 absolute flex items-center justify-center p-5" style={{left:"-40px"}}>+</div>
                 <h3 className="text-2xl text-gray-900 font-semibold">Create Project!</h3>
                 <p className="text-gray-600"> Input details of your Airtable project. All fields are mandatory.</p>
                 <input

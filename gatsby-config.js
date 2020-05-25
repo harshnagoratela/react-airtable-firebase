@@ -10,7 +10,16 @@ module.exports = {
     `gatsby-plugin-postcss`,
     {
       resolve: `gatsby-plugin-create-client-paths`,
-      options: { prefixes: [`/app/*`] }
+      options: { prefixes: [`/app/*`,`/public/*`] }
+    },
+    {
+        resolve: `gatsby-plugin-nprogress`,
+        options: {
+        // Setting a color is optional.
+        color: `tomato`,
+        // Disable the loading spinner.
+        showSpinner: false,
+        },
     },
     {
       resolve: "gatsby-plugin-firebase",

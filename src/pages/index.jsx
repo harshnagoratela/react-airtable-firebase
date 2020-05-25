@@ -19,7 +19,7 @@ const Index = () => {
     }
 
     {!isLoggedIn() && 
-      <button class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+      <button className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
           <Link to="/app/login">Login with Firebase</Link>
         </button>
     }
