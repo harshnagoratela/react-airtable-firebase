@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { getUser } from "../../utils/auth"
 import { useFirebase } from "gatsby-plugin-firebase"
 import { Link } from "gatsby"
+import Loader from 'react-loader-spinner'
 
 const Projects = () => {
     const user = getUser();
@@ -32,6 +33,9 @@ const Projects = () => {
 
     return (
         <>
+            {loading &&
+                <div className="flex justify-center"><Loader type="Bars" color="#00BFFF" height={30} width={80} /></div>
+            }
             {projects.map(project => (
                 <div key={project.slug} className="max-w-md py-4 mb-4 px-8 bg-gray-200 hover:bg-green-100 border border-gray-200 shadow-lg rounded-lg">
                     <div>

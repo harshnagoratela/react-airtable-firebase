@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Airtable from 'airtable';
 import { useFirebase } from "gatsby-plugin-firebase"
 import HeartButton from '../../components/HeartButton'
+import Loader from 'react-loader-spinner'
 
 const ProjectPublicView = props => {
 
@@ -11,6 +12,7 @@ const ProjectPublicView = props => {
     const [error, setError] = useState("");
     const [title, setTitle] = useState("");
     const [fb, setFb] = useState();
+    const [loading, setLoading] = useState(true);
 
     useFirebase(firebase => {
         setFb(firebase);
@@ -43,11 +45,12 @@ const ProjectPublicView = props => {
                             }
                             fetchNextPage();
                         }
-                    );
+                    ).then(setLoading(false));
             }
         });
 
         //getting votes data
+        setLoading(true);
         firebase
         .database()
         .ref(`users/${props.userid}/projects/${props.slug}/votes`)
@@ -57,17 +60,17 @@ const ProjectPublicView = props => {
             console.log("******* Votes data")
             console.log(snapshotVal)  
             if(snapshotVal) setVotes(snapshotVal);
+            setLoading(false);
         });
     }, [])
 
-    useEffect(() => {
-
-    });
-
     return (
         <div className="App">
-            <h1 className="text-center text-3xl underline px-2 py-3">Products View - {title}</h1>
-
+            {loading &&
+                <div className="flex justify-center"><Loader type="Bars" color="#00BFFF" height={30} width={80} /></div>
+            }
+            
+            <h1 className="text-center text-3xl px-2 py-3">{title}</h1>
             {records.length > 0 && records.map((record, index) =>
                 <div key={index} className="flex w-3/4 m-5 bg-white shadow-lg rounded-lg mx-auto overflow-hidden">
                     <div className="w-2 bg-gray-800"></div>
