@@ -4,12 +4,10 @@ import Layout from "../components/Layout"
 import View from "../components/View"
 import Status from "../components/Status"
 import Projects from "../components/Projects"
-import { getUser, isLoggedIn} from "../utils/auth"
+import { isLoggedIn} from "../utils/auth"
 
 const Index = () => {
-  const user = getUser();
-  const { displayName, email } = user;
-
+  
   return (
   <Layout>
     <Status />

@@ -1,13 +1,12 @@
 import React from "react"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { navigate } from "@reach/router"
 import { getUser } from "../../utils/auth"
-import { FirebaseContext } from "gatsby-plugin-firebase"
+import firebase from "gatsby-plugin-firebase"
 import View from "../View"
 import _ from "lodash"
 
 const ProjectCreate = () => {
-    const firebase = React.useContext(FirebaseContext)
     const user = getUser();
 
     const [title, setTitle] = useState("");

@@ -1,7 +1,7 @@
 import React from "react"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { getUser } from "../../utils/auth"
-import { useFirebase } from "gatsby-plugin-firebase"
+import firebase from "gatsby-plugin-firebase"
 import { Link } from "gatsby"
 import Loader from 'react-loader-spinner'
 
@@ -11,7 +11,7 @@ const Projects = () => {
     const [loading, setLoading] = useState(true);
     const [projects, setProjects] = useState([]);
 
-    useFirebase(firebase => {
+    React.useEffect(() => {
         if (loading && !projects.length) {
             firebase
                 .database()

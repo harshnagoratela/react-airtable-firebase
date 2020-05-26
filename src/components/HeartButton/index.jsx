@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import './hearbutton.styles.css'
 

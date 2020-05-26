@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Airtable from 'airtable';
-import { useFirebase } from "gatsby-plugin-firebase"
+import firebase from "gatsby-plugin-firebase"
 import HeartButton from '../../components/HeartButton'
 import Loader from 'react-loader-spinner'
 
@@ -14,7 +14,7 @@ const ProjectPublicView = props => {
     const [fb, setFb] = useState();
     const [loading, setLoading] = useState(true);
 
-    useFirebase(firebase => {
+    React.useEffect(() => {
         setFb(firebase);
         firebase
         .database()
@@ -75,11 +75,11 @@ const ProjectPublicView = props => {
                 <div key={index} className="flex w-3/4 m-5 bg-white shadow-lg rounded-lg mx-auto overflow-hidden">
                     <div className="w-2 bg-gray-800"></div>
                     <div className="flex items-center px-2 py-3">
-                        <img className="my-auto h-24 w-24 border-gray-500 rounded-md border-4" src={record.fields["Image"][0].url} />
+                        <img className="my-auto h-24 w-24 border-gray-500 rounded-md border-4" src={record.fields["Image"][0].url} alt={record.fields["Title"]} />
                         <div className="mx-3">
                             <h2 className="text-xl font-semibold text-gray-800">{record.fields["Title"]}</h2>
                             <p className="text-gray-600">{record.fields["Subtitle"]}</p>
-                            <p className="text-left"><a href={record.fields["URL"]} target="_blank" className="text-blue-500">Visit Site</a></p>
+                            <p className="text-left"><a href={record.fields["URL"]} target="_blank" rel="noreferrer" className="text-blue-500">Visit Site</a></p>
                             <HeartButton id={record.id} firebase={fb} userid={props.userid} currentVotes={votes[record.id]} slug={props.slug} />
                         </div>
                     </div>

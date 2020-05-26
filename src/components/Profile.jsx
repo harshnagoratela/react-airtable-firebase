@@ -1,8 +1,7 @@
 import React from "react"
-import { useState, useEffect } from "react"
 import View from "./View"
 import { getUser } from "../utils/auth"
-import { useFirebase} from "gatsby-plugin-firebase"
+import firebase from "gatsby-plugin-firebase"
 
 const Profile = () => {
   const user = getUser();
@@ -11,7 +10,7 @@ const Profile = () => {
 
   //const [firebase, setFirebase] = useState();
 
-  useFirebase(firebase => {
+  React.useEffect(() => {
     //setFirebase(firebase);
     console.log(firebase);
     console.log(firebase.database());
