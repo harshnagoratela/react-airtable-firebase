@@ -34,6 +34,7 @@ module.exports = {
           performance: false
         }
       }
-    }
+    },
+    `gatsby-plugin-netlify`
   ]
 }
