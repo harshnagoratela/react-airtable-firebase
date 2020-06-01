@@ -5,6 +5,7 @@ import Loader from 'react-loader-spinner'
 
 import FirstDemoTemplate from './PublicTemplates/FirstDemo'
 
+
 const ProjectPublicView = props => {
 
     const [records, setRecords] = useState([]);
@@ -12,6 +13,8 @@ const ProjectPublicView = props => {
     const [error, setError] = useState("");
     const [title, setTitle] = useState("");
     const [loading, setLoading] = useState(true);
+
+    
 
     React.useEffect(() => {
         firebase
@@ -39,12 +42,15 @@ const ProjectPublicView = props => {
                             console.log(records)
                             fetchNextPage();
                         }
-                    ).then(setLoading(false));
+                    ).then(getVotesData());
             }
         }, [props.userid, props.slug]);
 
+        
+    }, [props, getVotesData]);
+
+    const getVotesData = () => {
         //getting votes data
-        setLoading(true);
         firebase
         .database()
         .ref(`users/${props.userid}/projects/${props.slug}/votes`)
@@ -56,7 +62,7 @@ const ProjectPublicView = props => {
             if(snapshotVal) setVotes(snapshotVal);
             setLoading(false);
         });
-    }, [props]);
+    };
 
     const likeHelperData = {
         userid: props.userid,
@@ -70,7 +76,7 @@ const ProjectPublicView = props => {
                 <div className="flex justify-center"><Loader type="Bars" color="#00BFFF" height={30} width={80} /></div>
             }
             
-            {!loading &&
+            {!loading && records.length > 0 &&
                 <FirstDemoTemplate title={title} records={records} likeHelperData={likeHelperData} />
             }
         </div>

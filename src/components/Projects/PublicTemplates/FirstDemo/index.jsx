@@ -12,8 +12,10 @@ class FirstDemo extends React.Component {
 
     render() {
         const { title, records, likeHelperData } = this.state
-        console.log("******* templates ")
+        console.log("******* Records in template ")
         console.log(records)        
+        console.log("******* likeHelperData in template ")
+        console.log(likeHelperData)        
 
         return (
             <>
