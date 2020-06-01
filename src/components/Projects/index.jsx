@@ -29,7 +29,7 @@ const Projects = () => {
                     setLoading(false);
                 });
         }
-    }, [])
+    }, [loading, projects, user])
 
     return (
         <>

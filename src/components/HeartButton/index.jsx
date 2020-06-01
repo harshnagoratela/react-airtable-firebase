@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaRegHeart, FaHeart } from "react-icons/fa";
+import firebase from "gatsby-plugin-firebase"
 import './hearbutton.styles.css'
 
 class HeartButton extends React.Component {
@@ -14,7 +15,7 @@ class HeartButton extends React.Component {
 
         let newCount = this.state.likes + 1;        
 
-        this.props.firebase
+        firebase
           .database()
           .ref()
           .child(`users/${this.props.userid}/projects/${this.props.slug}/votes/${this.props.id}`)

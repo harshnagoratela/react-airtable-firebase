@@ -95,6 +95,17 @@ const ProjectCreate = () => {
                         setTableName(value);
                     }}
                 />                
+                <input
+                    className="border p-2 w-full mt-3"
+                    id="apikey"
+                    placeholder="Airtable View Name"
+                    type="text"
+                    value={tableName}
+                    required
+                    onChange={({ target: { value } }) => {
+                        setTableName(value);
+                    }}
+                />                
                 <input type="button" value="Create" onClick={createProject} className="w-1/2 mt-6 bg-blue-600 hover:bg-blue-500 text-white font-semibold p-3" />
             </form>
         </View>
