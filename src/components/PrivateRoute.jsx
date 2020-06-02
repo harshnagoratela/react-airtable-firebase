@@ -10,7 +10,7 @@ const PrivateRoute = ({ component: Component, location, ...rest }) => {
     return null
   }
 
-  return <Component {...rest} />
+  return <Component location={location} {...rest} />
 }
 
 PrivateRoute.propTypes = {

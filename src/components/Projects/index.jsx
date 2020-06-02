@@ -42,6 +42,10 @@ const Projects = () => {
                         <h2 className="text-gray-800 border-b-4 text-lg mb-4 font-semibold">{project.title}</h2>
                     </div>
                     <div>
+                        <h2 className="text-gray-800 font-semibold">Project Template Code</h2>
+                        <p className="mb-4 text-xs text-gray-600">{project.selectedTemplate}</p>
+                    </div>
+                    <div>
                         <h2 className="text-gray-800 font-semibold">Airtable API Key</h2>
                         <p className="mb-4 text-xs text-gray-600">{project.apiKey}</p>
                     </div>
@@ -53,6 +57,13 @@ const Projects = () => {
                         <h2 className="text-gray-800 font-semibold">Airtable Table Name</h2>
                         <p className="mb-4 text-xs text-gray-600">{project.tableName}</p>
                     </div>
+                    <div>
+                        <h2 className="text-gray-800 font-semibold">Airtable View Name</h2>
+                        <p className="mb-4 text-xs text-gray-600">{project.viewName}</p>
+                    </div>
+                    {/*<div className="flex justify-end mt-4">
+                        <Link to={`/app/project/create`} state={{ mode: "edit", userid: user.uid, slug: project.slug }} className="text-xl font-medium text-indigo-500">Edit Project...</Link>
+                    </div>*/}
                     <div className="flex justify-end mt-4">
                         <Link to={`/public/${user.uid}/project/${project.slug}`} target="_blank" className="text-xl font-medium text-indigo-500">See Public View...</Link>
                     </div>
