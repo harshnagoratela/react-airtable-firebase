@@ -7,15 +7,15 @@ class FirstDemo extends React.Component {
     state = {
         title: this.props.title || "",
         records: this.props.records || [],
-        likeHelperData : this.props.likeHelperData
+        likeHelperData: this.props.likeHelperData
     };
 
     render() {
         const { title, records, likeHelperData } = this.state
         console.log("******* Records in template ")
-        console.log(records)        
+        console.log(records)
         console.log("******* likeHelperData in template ")
-        console.log(likeHelperData)        
+        console.log(likeHelperData)
 
         return (
             <>
@@ -29,13 +29,13 @@ class FirstDemo extends React.Component {
                                 <h2 className="text-xl font-semibold text-gray-800">{record.fields["Title"]}</h2>
                                 <p className="text-gray-600">{record.fields["Subtitle"]}</p>
                                 <p className="text-left"><a href={record.fields["URL"]} target="_blank" rel="noreferrer" className="text-blue-500">Visit Site</a></p>
-                                {likeHelperData && 
+                                {likeHelperData &&
                                     <HeartButton id={record.id} userid={likeHelperData.userid} currentVotes={likeHelperData.votes[record.id]} slug={likeHelperData.slug} />
                                 }
                             </div>
                         </div>
                     </div>
-                )}   
+                )}
             </>
         )
     }
