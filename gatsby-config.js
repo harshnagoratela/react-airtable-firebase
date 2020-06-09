@@ -7,7 +7,17 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-postcss`,
+    {
+      resolve: `gatsby-plugin-prefetch-google-fonts`,
+      options: {
+        fonts: [
+          {
+            family: `Spectral`,
+            variants: [`500`]
+          },
+        ],
+      },
+    },
     {
       resolve: `gatsby-plugin-create-client-paths`,
       options: { prefixes: [`/app/*`,`/public/*`] }

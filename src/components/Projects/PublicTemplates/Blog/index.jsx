@@ -17,36 +17,39 @@ class BlogTemplate extends React.Component {
 
         return (
             <>
-                <h1 className="text-center text-3xl px-2 py-3">{title}</h1>
-                <main className="py-4">
-                    <div className="px-4">
-                        <div className="grid grid-cols-1 justify-between">
-                            {records.length > 0 && records.map((record, index) =>
-                                <div key={index} className="w-full lg:p-3 md:p-2">
-                                    <div className="bg-white rounded-lg shadow">
-                                        <img className="h-56 w-full object-cover object-center" src={record.fields["Images"] && record.fields["Images"].length > 0 && record.fields["Images"][0].url} alt="" />
-                                        <div className="pt-4 pl-4">
-                                            <a className="inline bg-gray-300 p-1 text-xs lowercase text-gray-700 mr-2">{record.fields["Category"]}</a>
-                                        </div>
-                                        <div className="p-4">
-                                            <a className="block text-blue-500 hover:text-blue-600 font-semibold text-lg md:text-base lg:text-lg">
-                                                {record.fields["Title"]}
-                                             </a>
-                                            <div className="block text-blue-400 mb-2 text-sm md:text-xs lg:text-sm">
-                                                {record.fields["Author"]}
-                                            </div>
-                                            <div className="text-gray-600 text-sm leading-relaxed block md:text-xs lg:text-sm">
-                                                {record.fields["Body"]}
-                                            </div>                                            
+                <div className="container">
+                {records.length > 0 && records.map((record, index) =>
+                    <div key={index} className="row d-flex">
+                        <div className="col-12">
+                            <h1>{record.fields["Title"]}</h1>
+                            <div className="row mt-3 mb-3 align-items-center">
+                                <div className="col-2 col-lg-1">
+                                    <a href="#">
+                                        <img src={record.fields["Images"] && record.fields["Images"].length > 0 && record.fields["Images"][0].url} className="blog-img" alt="blog profile image" />
+                                    </a>
+                                </div>
+                                <div className="col-7 col-lg-10">
+                                    <a href="#">
+                                        <p>{record.fields["Author"]}</p>
+                                    </a>
+                                    <div className="row">
+                                        <div className="col-12 info">
+                                            <p className="d-inline">{record.fields["Last Modified Date"]}</p>
                                         </div>
                                     </div>
                                 </div>
-                            )}
-
+                            </div>
+                            <div className="row">
+                                <div className="col-12">
+                                    <p>{record.fields["Body"]}</p>
+                                    <br />
+                                    <hr />
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </main>
-
+                )}
+                </div>
                 {this.state.error &&
                     <div>ERROR = {this.state.error}</div>
                 }
