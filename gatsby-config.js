@@ -3,10 +3,12 @@ require("dotenv").config({
 })
 module.exports = {
   siteMetadata: {
-    title: `Hyper`,
+    title: `Hyperlyst`,
+    description: `Hyperlyst`
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
+    
     {
       resolve: `gatsby-plugin-prefetch-google-fonts`,
       options: {

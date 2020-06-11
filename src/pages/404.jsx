@@ -1,12 +1,14 @@
 import React from "react"
 import Layout from "../components/Layout"
-import View from "../components/View"
+import SEO from "../components/SEO"
+import {Alert} from "react-bootstrap"
 
 const NotFound = () => (
   <Layout>
-    <View title="Not Found">
-      <p>You just hit a route that doesn&#39;t exist... the sadness.</p>
-    </View>
+	<Alert variant="light" className="align-center">
+		<Alert.Heading>Page Not Found ... !!!</Alert.Heading>
+		<div>You just hit a route that doesn&#39;t exist... the sadness.</div>
+	</Alert>
   </Layout>
 )
 

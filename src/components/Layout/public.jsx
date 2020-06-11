@@ -1,19 +1,17 @@
 import React from "react"
 import { Link } from "gatsby"
 import { Card } from "react-bootstrap"
-import Header from "../Header"
 import ScrollupButton from "../ScrollupButton"
 import Footer from "../Footer"
 
 // Global styles.
-import "./admin.css"
+import "./public.css"
 
-const Layout = ({ location, title, children }) => {
-
+const LayoutPublic = ({ location, title, children }) => {
   return (
     <div>
-      <Header />
       <Card border="light">
+      <Card.Header as="h1" className="text-center bg-primary text-light"><br/>{title}<br/><br/></Card.Header>
         <Card.Body>
             <main>{children}</main>
         </Card.Body>
@@ -24,4 +22,4 @@ const Layout = ({ location, title, children }) => {
   )
 }
 
-export default Layout
+export default LayoutPublic

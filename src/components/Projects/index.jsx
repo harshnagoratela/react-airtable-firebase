@@ -4,6 +4,7 @@ import { getUser } from "../../utils/auth"
 import firebase from "gatsby-plugin-firebase"
 import { Link } from "gatsby"
 import Loader from 'react-loader-spinner'
+import {Alert, Card, CardColumns } from "react-bootstrap"
 
 const Projects = () => {
     const user = getUser();
@@ -34,51 +35,53 @@ const Projects = () => {
     return (
         <>
             {loading &&
-                <div className="flex justify-center"><Loader type="Bars" color="#00BFFF" height={30} width={80} /></div>
+                <div className="text-center"><Loader type="Bars" color="#00BFFF" height={30} width={80} /></div>
             }
-            {projects.map(project => (
-                <div key={project.slug} className="max-w-md py-4 mb-4 px-8 bg-gray-200 hover:bg-green-100 border border-gray-200 shadow-lg rounded-lg">
-                    <div>
-                        <h2 className="text-gray-800 border-b-4 text-lg mb-4 font-semibold">{project.title}</h2>
-                    </div>
-                    <div>
-                        <h2 className="text-gray-800 font-semibold">Project Template Code</h2>
-                        <p className="mb-4 text-xs text-gray-600">{project.selectedTemplate}</p>
-                    </div>
-                    <div>
-                        <h2 className="text-gray-800 font-semibold">Airtable API Key</h2>
-                        <p className="mb-4 text-xs text-gray-600">{project.apiKey}</p>
-                    </div>
-                    <div>
-                        <h2 className="text-gray-800 font-semibold">Airtable Base ID</h2>
-                        <p className="mb-4 text-xs text-gray-600">{project.baseId}</p>
-                    </div>
-                    <div>
-                        <h2 className="text-gray-800 font-semibold">Airtable Table Name</h2>
-                        <p className="mb-4 text-xs text-gray-600">{project.tableName}</p>
-                    </div>
-                    <div>
-                        <h2 className="text-gray-800 font-semibold">Airtable View Name</h2>
-                        <p className="mb-4 text-xs text-gray-600">{project.viewName}</p>
-                    </div>
-                    {/*<div className="flex justify-end mt-4">
+            <CardColumns>
+                {projects.map(project => (
+                    <Card key={project.slug} style={{ margin: "10px" }}>
+                        <Card.Header className="bg-primary">{project.title}</Card.Header>
+                        <Card.Body>
+                            <table className="table">
+                                <tbody>
+                                    <tr>
+                                        <th>Project Template Code</th>
+                                        <td>{project.selectedTemplate}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Airtable API Key</th>
+                                        <td>{project.apiKey}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Airtable Base ID</th>
+                                        <td>{project.baseId}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Airtable Table Name</th>
+                                        <td>{project.tableName}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Airtable View Name</th>
+                                        <td>{project.viewName}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            {/*<div className="flex justify-end mt-4">
                         <Link to={`/app/project/create`} state={{ mode: "edit", userid: user.uid, slug: project.slug }} className="text-xl font-medium text-indigo-500">Edit Project...</Link>
                     </div>*/}
-                    <div className="flex justify-end mt-4">
-                        <Link to={`/public/${user.uid}/project/${project.slug}`} target="_blank" className="text-xl font-medium text-indigo-500">See Public View...</Link>
-                    </div>
-                </div>
-            ))}
-            {projects.length <= 0 &&
-                <div className="bg-blue-100 border-t-4 border-blue-600 rounded-b text-blue-800 px-4 py-3 shadow-md my-2" role="alert">
-                    <div className="flex">
-                        <svg className="h-6 w-6 text-blue-800 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" /></svg>
-                        <div>
-                            <p className="font-bold">No Projects Found OR Projects are loading !!</p>
-                            <p className="text-sm">You can create new projects from top menu options.</p>
-                        </div>
-                    </div>
-                </div>
+                        </Card.Body>
+                        <Card.Footer>
+                            <Link to={`/public/${user.uid}/project/${project.slug}`} target="_blank">See Public View...</Link>
+                        </Card.Footer>
+                    </Card>
+                ))}
+            </CardColumns>
+            {!loading && projects.length <= 0 &&
+                <Alert variant="info">
+                    <Alert.Heading>No Projects Found OR Projects are loading !!</Alert.Heading>
+                    <p>You can create new projects from top menu options.</p>
+                </Alert>
             }
         </>
     )

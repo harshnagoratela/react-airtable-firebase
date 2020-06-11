@@ -5,6 +5,8 @@ import firebase from "gatsby-plugin-firebase"
 import Loader from 'react-loader-spinner'
 import _ from "lodash"
 
+import LayoutPublic from "../Layout/public"
+
 import FirstDemoTemplate from './PublicTemplates/FirstDemo'
 import BlogTemplate from './PublicTemplates/Blog'
 
@@ -111,20 +113,13 @@ const ProjectPublicView = props => {
     }
 
     return (
-        <>
+        <LayoutPublic title={title}>
             <Helmet title={`Hyper - ${title}`}>
 
             </Helmet>
             <div className="App">
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-12 d-flex flex-column justify-content-center align-items-center mt-4 mb-4 blue-section">
-                            <h3>{title}</h3>
-                        </div>
-                    </div>
-                </div>
                 {loading &&
-                    <div className="d-flex justify-content-center align-items-center"><Loader type="Bars" color="#00BFFF" height={30} width={80} /></div>
+                    <div className="text-center"><Loader type="Bars" color="#00BFFF" height={30} width={80} /></div>
                 }
 
                 {error &&
@@ -149,19 +144,8 @@ const ProjectPublicView = props => {
                 {!loading && records.length > 0 && template && template === "template_001_blog" &&
                     <BlogTemplate title={title} records={records} />
                 }
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-12 d-flex flex-column justify-content-center align-items-center mt-4 mb-4 blue-section">
-                            <h3>Ready for more?</h3>
-                            <form name="form">
-                                <input placeholder="Type your email..." />
-                                <button type="submit">Subscribe</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </>
+        </LayoutPublic>
     )
 }
 
