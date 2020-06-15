@@ -1,5 +1,4 @@
 import React from "react"
-import { Link } from "gatsby"
 import ScrollToTop from "react-scroll-up"
 import { FiArrowUpCircle } from "react-icons/fi"
 

@@ -5,9 +5,9 @@ import Select from "react-select"
 import { navigate } from "@reach/router"
 import { getUser } from "../../utils/auth"
 import firebase from "gatsby-plugin-firebase"
-import View from "../View"
 import _ from "lodash"
 import Loader from 'react-loader-spinner'
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 const ProjectCreate = ({ location }) => {
     const user = getUser();
@@ -170,9 +170,13 @@ const ProjectCreate = ({ location }) => {
                                             <label>
                                                 Use below button to Copy Template's Airtable Base
                                             </label>
-                                            <div><a href={airtableBaseCopy} target="_blank" className="text-primary p-2 w-100">
-                                                Copy Template Base
-                                            </a></div>
+                                            <div>
+                                                <OverlayTrigger key="copybase" placement="top" overlay={<Tooltip id="copybase">Refer <strong>Help Item#1</strong> for more details</Tooltip>}>
+                                                    <a href={airtableBaseCopy} target="_blank" rel="noreferrer" className="text-primary p-2 w-100">
+                                                        Copy Template Base
+                                                </a>
+                                                </OverlayTrigger>
+                                            </div>
                                         </div>
                                     </fieldset>
                                     <div className="form-group">
@@ -217,43 +221,49 @@ const ProjectCreate = ({ location }) => {
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <input
-                                            className="form-control p-2 mt-3"
-                                            id="apikey"
-                                            placeholder="Airtable Base ID"
-                                            type="text"
-                                            value={baseId}
-                                            required
-                                            onChange={({ target: { value } }) => {
-                                                setBaseId(value);
-                                            }}
-                                        />
+                                        <OverlayTrigger key="baseid" placement="top" overlay={<Tooltip id="baseid">Refer <strong>Help Item#2</strong> for more details on getting Airtable Base ID</Tooltip>}>
+                                            <input
+                                                className="form-control p-2 mt-3"
+                                                id="apikey"
+                                                placeholder="Airtable Base ID"
+                                                type="text"
+                                                value={baseId}
+                                                required
+                                                onChange={({ target: { value } }) => {
+                                                    setBaseId(value);
+                                                }}
+                                            />
+                                        </OverlayTrigger>
                                     </div>
                                     <div className="form-group">
-                                        <input
-                                            className="form-control p-2 mt-3"
-                                            id="apikey"
-                                            placeholder="Airtable Table Name"
-                                            type="text"
-                                            value={tableName}
-                                            required
-                                            onChange={({ target: { value } }) => {
-                                                setTableName(value);
-                                            }}
-                                        />
+                                        <OverlayTrigger key="copybase" placement="top" overlay={<Tooltip id="copybase">Refer <strong>Help Item#3</strong> for more details on getting Airtable Table Name</Tooltip>}>
+                                            <input
+                                                className="form-control p-2 mt-3"
+                                                id="apikey"
+                                                placeholder="Airtable Table Name"
+                                                type="text"
+                                                value={tableName}
+                                                required
+                                                onChange={({ target: { value } }) => {
+                                                    setTableName(value);
+                                                }}
+                                            />
+                                        </OverlayTrigger>
                                     </div>
                                     <div className="form-group">
-                                        <input
-                                            className="form-control p-2 mt-3"
-                                            id="apikey"
-                                            placeholder="Airtable View Name e.g. Grid view"
-                                            type="text"
-                                            value={viewName}
-                                            required
-                                            onChange={({ target: { value } }) => {
-                                                setViewName(value);
-                                            }}
-                                        />
+                                        <OverlayTrigger key="copybase" placement="top" overlay={<Tooltip id="copybase">Refer <strong>Help Item#3</strong> for more details on getting Airtable View Name</Tooltip>}>
+                                            <input
+                                                className="form-control p-2 mt-3"
+                                                id="apikey"
+                                                placeholder="Airtable View Name e.g. Grid view"
+                                                type="text"
+                                                value={viewName}
+                                                required
+                                                onChange={({ target: { value } }) => {
+                                                    setViewName(value);
+                                                }}
+                                            />
+                                        </OverlayTrigger>
                                     </div>
                                     <div className="mx-auto">
                                         <input type="button" value={`Create Project`} onClick={createProject} className="btn btn-primary" />
@@ -261,6 +271,24 @@ const ProjectCreate = ({ location }) => {
                                 </form>
                             </div>
                         </div>
+                    </div>
+                    <div className="col-lg-6">
+                        <h2>Page Create Help</h2>
+                        <ol>
+                            <li>
+                                Clicking "Copy Template Base" will open a new browser tab.
+                                Switch to the newly opend tab and click on "Copy base" (in the upper right corner) to copy it to your Airtable account.
+                                <br /><img src="/images/copy-base-example.png" width="100%" />
+                            </li>
+                            <li>
+                                To find your Airtable Base ID, go to https://airtable.com/api/. Then Click on your base and copy the ID from the URL.
+                                <br /><img src="/images/get-baseid-example.png" width="100%" />
+                            </li>
+                            <li>
+                                Go to the actual Base in Airtable and get <i>TableName</i> and <i>ViewName</i> as mentioned in below screenshot
+                                <br /><img src="/images/get-table-view-example.png" width="100%" />
+                            </li>
+                        </ol>
                     </div>
                 </div>
             </div>

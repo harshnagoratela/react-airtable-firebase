@@ -1,7 +1,5 @@
 import React from "react"
-import { Link } from "gatsby"
 import Layout from "../components/Layout"
-import SEO from "../components/SEO"
 import Status from "../components/Status"
 import Projects from "../components/Projects"
 import { Button } from 'react-bootstrap';

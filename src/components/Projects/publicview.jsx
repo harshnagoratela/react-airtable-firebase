@@ -3,11 +3,10 @@ import { Helmet } from 'react-helmet';
 import Airtable from 'airtable';
 import firebase from "gatsby-plugin-firebase"
 import Loader from 'react-loader-spinner'
-import _ from "lodash"
 
 import LayoutPublic from "../Layout/public"
 
-import FirstDemoTemplate from './PublicTemplates/FirstDemo'
+import ProductHuntTemplate from './PublicTemplates/ProductHunt'
 import BlogTemplate from './PublicTemplates/Blog'
 
 const ProjectPublicView = props => {
@@ -18,7 +17,22 @@ const ProjectPublicView = props => {
     const [title, setTitle] = useState("");
     const [loading, setLoading] = useState(true);
     const [template, setTemplate] = useState();
-    const [mandatoryFields, setMandatoryFields] = useState();
+    //const [mandatoryFields, setMandatoryFields] = useState();
+
+    const getVotesData = () => {
+        //getting votes data
+        firebase
+            .database()
+            .ref(`users/${props.userid}/projects/${props.slug}/votes`)
+            .once("value")
+            .then(snapshot => {
+                const snapshotVal = snapshot.val();
+                console.log("******* Votes data")
+                console.log(snapshotVal)
+                if (snapshotVal) setVotes(snapshotVal);
+                setLoading(false);
+            });
+    };
 
     React.useEffect(() => {
         firebase
@@ -35,7 +49,7 @@ const ProjectPublicView = props => {
                 if (!snapshotVal.tableName) { setError("ERROR: Unable to find 'TABLE NAME' in Project Details"); }
                 if (snapshotVal.viewName) { viewName = snapshotVal.viewName }
                 if (snapshotVal.selectedTemplate) { setTemplate(snapshotVal.selectedTemplate); }
-                console.log("*** Template = " + template)
+                //console.log("*** Template = " + template)
 
                 if (snapshotVal && snapshotVal.apiKey && snapshotVal.baseId && snapshotVal.tableName) {
                     setTitle(snapshotVal.title);
@@ -56,21 +70,6 @@ const ProjectPublicView = props => {
 
 
     }, [props, getVotesData, checkMandatoryFieldsData]);
-
-    const getVotesData = () => {
-        //getting votes data
-        firebase
-            .database()
-            .ref(`users/${props.userid}/projects/${props.slug}/votes`)
-            .once("value")
-            .then(snapshot => {
-                const snapshotVal = snapshot.val();
-                console.log("******* Votes data")
-                console.log(snapshotVal)
-                if (snapshotVal) setVotes(snapshotVal);
-                setLoading(false);
-            });
-    };
 
     const checkMandatoryFieldsData = () => {
         if (!template) return;
@@ -137,8 +136,8 @@ const ProjectPublicView = props => {
                     </div>
                 }
 
-                {!loading && records.length > 0 && !template &&
-                    <FirstDemoTemplate title={title} records={records} likeHelperData={likeHelperData} />
+                {!loading && records.length > 0 && !template &&  template === "template_002_producthunt" &&
+                    <ProductHuntTemplate title={title} records={records} likeHelperData={likeHelperData} />
                 }
 
                 {!loading && records.length > 0 && template && template === "template_001_blog" &&
