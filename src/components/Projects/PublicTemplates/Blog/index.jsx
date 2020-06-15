@@ -21,10 +21,10 @@ class BlogTemplate extends React.Component {
 
                 <div className="container">
                     {records.length > 0 && records.map((record, index) =>
-                        <div key={index} class="row">
-                            <div class="col">
-                                <h1 class="mt-4">{record.fields["Title"]}</h1>
-                                <p class="lead">
+                        <div key={index} className="row">
+                            <div className="col">
+                                <h1 className="mt-4">{record.fields["Title"]}</h1>
+                                <p className="lead">
                                     by{`  `}
                                     <a>{record.fields["Author"]}</a>
                                 </p>

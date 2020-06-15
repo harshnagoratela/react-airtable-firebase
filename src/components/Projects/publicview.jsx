@@ -17,22 +17,6 @@ const ProjectPublicView = props => {
     const [title, setTitle] = useState("");
     const [loading, setLoading] = useState(true);
     const [template, setTemplate] = useState();
-    //const [mandatoryFields, setMandatoryFields] = useState();
-
-    const getVotesData = () => {
-        //getting votes data
-        firebase
-            .database()
-            .ref(`users/${props.userid}/projects/${props.slug}/votes`)
-            .once("value")
-            .then(snapshot => {
-                const snapshotVal = snapshot.val();
-                console.log("******* Votes data")
-                console.log(snapshotVal)
-                if (snapshotVal) setVotes(snapshotVal);
-                setLoading(false);
-            });
-    };
 
     React.useEffect(() => {
         firebase
@@ -41,15 +25,15 @@ const ProjectPublicView = props => {
             .once("value")
             .then(snapshot => {
                 const snapshotVal = snapshot.val();
-                console.log(snapshotVal)
+                //console.log(snapshotVal)
                 let viewName = "Grid view";
                 if (!snapshotVal) { setError("ERROR: Unable to find Project Details"); }
-                if (!snapshotVal.apiKey) { setError("ERROR: Unable to find 'API KEY' in Project Details"); }
-                if (!snapshotVal.baseId) { setError("ERROR: Unable to find 'BASE ID' in Project Details"); }
-                if (!snapshotVal.tableName) { setError("ERROR: Unable to find 'TABLE NAME' in Project Details"); }
-                if (snapshotVal.viewName) { viewName = snapshotVal.viewName }
-                if (snapshotVal.selectedTemplate) { setTemplate(snapshotVal.selectedTemplate); }
-                //console.log("*** Template = " + template)
+                if (!snapshotVal || !snapshotVal.apiKey) { setError("ERROR: Unable to find 'API KEY' in Project Details"); }
+                if (!snapshotVal || !snapshotVal.baseId) { setError("ERROR: Unable to find 'BASE ID' in Project Details"); }
+                if (!snapshotVal || !snapshotVal.tableName) { setError("ERROR: Unable to find 'TABLE NAME' in Project Details"); }
+                if (snapshotVal && snapshotVal.viewName) { viewName = snapshotVal.viewName }
+                if (snapshotVal && snapshotVal.selectedTemplate) { setTemplate(snapshotVal.selectedTemplate); }
+                console.log("*** Template = " + template)
 
                 if (snapshotVal && snapshotVal.apiKey && snapshotVal.baseId && snapshotVal.tableName) {
                     setTitle(snapshotVal.title);
@@ -64,45 +48,24 @@ const ProjectPublicView = props => {
                                 console.log(records)
                                 fetchNextPage();
                             }
-                        ).then(getVotesData()).then(checkMandatoryFieldsData());
+                        ).then(getVotesData());
                 }
             }, [props.userid, props.slug]);
+    }, [loading, template]);
 
-
-    }, [props, getVotesData, checkMandatoryFieldsData]);
-
-    const checkMandatoryFieldsData = () => {
-        if (!template) return;
-
-        /*
+    const getVotesData = () => {
+        //getting votes data
         firebase
-        .database()
-        .ref(`templates/${template}`)
-        .once("value")
-        .then(snapshot => {
-            const snapshotVal = snapshot.val();
-            console.log("********** Templates data");
-            console.log(snapshotVal)
-            if(snapshotVal && snapshotVal.mandatoryFields) {setMandatoryFields(snapshotVal.mandatoryFields);}
-            //checking whether mandatory fields are present or not
-            if(records) {
-                if(records.length <=0 ) {setError("No Record Found in the Airtable")}
-                else {
-                    const recordKeys = Object.keys(records[0].fields);
-                    const arrayMandatoryFields = mandatoryFields.split(',');
-                    arrayMandatoryFields.map(field => {
-                        const exists = recordKeys.includes(field.trim());
-                        if(!exists) {
-                            const errorMessage = "Field '"+field+"' is not present in Airtable.";
-                            console.log(errorMessage)
-                            setError(errorMessage)
-                        }
-                    })    
-                    
-                }            
-            }
-        });
-        */
+            .database()
+            .ref(`users/${props.userid}/projects/${props.slug}/votes`)
+            .once("value")
+            .then(snapshot => {
+                const snapshotVal = snapshot.val();
+                console.log("******* Votes data")
+                console.log(snapshotVal)
+                if (snapshotVal) setVotes(snapshotVal);
+                setLoading(false);
+            });
     };
 
     const likeHelperData = {
@@ -125,7 +88,6 @@ const ProjectPublicView = props => {
                     <div className="flex justify-center">
                         <div className="bg-red-100 items-center border-t-4 border-red-600 rounded-b text-red-800 px-4 py-3 shadow-md my-2 w-1/2" role="alert">
                             <div className="flex">
-                                <svg className="h-6 w-6 text-red-800 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" /></svg>
                                 <div>
                                     <p className="font-bold">Error(s) Found</p>
                                     <p className="text-sm">{error}</p>
@@ -136,11 +98,11 @@ const ProjectPublicView = props => {
                     </div>
                 }
 
-                {!loading && records.length > 0 && !template &&  template === "template_002_producthunt" &&
+                {!loading && records.length > 0 && template === "template_002_producthunt" &&
                     <ProductHuntTemplate title={title} records={records} likeHelperData={likeHelperData} />
                 }
 
-                {!loading && records.length > 0 && template && template === "template_001_blog" &&
+                {!loading && records.length > 0 && template === "template_001_blog" &&
                     <BlogTemplate title={title} records={records} />
                 }
             </div>

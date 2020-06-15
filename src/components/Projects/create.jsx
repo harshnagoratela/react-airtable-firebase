@@ -117,6 +117,9 @@ const ProjectCreate = ({ location }) => {
             tableName,
             viewName
         };
+        console.log("*********** createproject")
+        console.log(newProject)
+        console.log(`users/${user.uid}/projects/${slug}`)
         firebase
             .database()
             .ref()
