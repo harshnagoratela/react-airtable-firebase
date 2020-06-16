@@ -27,11 +27,11 @@ class ProductHunt extends React.Component {
                                 <img className="img-fluid" src={record.fields["Image"][0].url} alt={record.fields["Title"]} />
                             </div>
                             <div className="col-md-9">
-                                <div class="row">
+                                <div className="row">
                                     <h4>{record.fields["Title"]}</h4>
                                     &nbsp;<a href={record.fields["URL"]} target="_blank" rel="noreferrer" className="btn btn-white text-primary p-0"><FiExternalLink /></a>
                                 </div>
-                                <div class="row">
+                                <div className="row">
                                     <p>{record.fields["Subtitle"]}</p>
                                 </div>
                             </div>

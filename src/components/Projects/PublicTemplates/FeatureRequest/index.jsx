@@ -37,13 +37,13 @@ class FeatureRequest extends React.Component {
                                 }
                             </div>
                             <div className="col-md-9">
-                                <div class="row">
+                                <div className="row">
                                     <h4>{record.fields["Title"]}</h4>
                                 </div>
-                                <div class="row">                                    
+                                <div className="row">                                    
                                     <Badge variant={badgeVariant[record.fields["Status"]]}>{record.fields["Status"]}</Badge>
                                 </div>
-                                <div class="row">
+                                <div className="row">
                                     <p>{record.fields["Details"]}</p>
                                 </div>
                             </div>
