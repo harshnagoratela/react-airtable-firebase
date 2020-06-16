@@ -31,13 +31,13 @@ class HeartButton extends React.Component {
         const likes = this.state.likes;
         const liked = this.state.liked;
         let bgColor = "transparent";
-        if(liked) bgColor = "aliceblue";
+        if(liked) bgColor = "";
 
         return (
-            <div>
+            <div className="row">
                 <button
                     id={this.props.id}
-                    className="button"
+                    className="btn btn-light py-3 px-4"
                     disabled={liked}
                     style={{ backgroundColor: bgColor }}
                     onClick={this.addLike}
@@ -48,6 +48,7 @@ class HeartButton extends React.Component {
                     {likes > 0 &&
                         <FaHeart style={{ marginBottom: "3px", display:"inline-block", color: "red" }} />
                     }
+                    <br/>
                     {" "}{likes}
                 </button>
             </div>

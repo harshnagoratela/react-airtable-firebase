@@ -17,7 +17,7 @@ const Layout = ({ location, title, children }) => {
         <Card.Body>
             <main>{children}</main>
         </Card.Body>
-        <Card.Footer className="text-muted"><Footer /></Card.Footer>
+        <Card.Footer className="text-muted position-sticky"><Footer /></Card.Footer>
       </Card>
       <ScrollupButton />
     </div>

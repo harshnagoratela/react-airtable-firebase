@@ -1,9 +1,9 @@
 import React from 'react';
-import {FiExternalLink} from 'react-icons/fi';
+import { Badge } from 'react-bootstrap';
 import HeartButton from '../../../HeartButton'
 import './component.styles.css'
 
-class ProductHunt extends React.Component {
+class FeatureRequest extends React.Component {
 
     state = {
         title: this.props.title || "",
@@ -17,28 +17,35 @@ class ProductHunt extends React.Component {
         console.log(records)
         console.log("******* likeHelperData in template ")
         console.log(likeHelperData)
+        const badgeVariant = {
+            "Under Review" : "warning",
+            "Open" : "primary",
+            "Planned" : "secondary",
+            "In Progress" : "info",
+            "Completed" : "success",
+            "Closed" : "danger"
+        };
 
         return (
-            <div className="product-hunt">
-                <div className="container border p-0 bg-white">
+            <div className="feature-request">
+                <div className="container mx-auto border p-0 bg-white">
                     {records.length > 0 && records.map((record, index) =>
                         <div key={index} className="row post border-bottom border-light">
-                            <div className="col-md-2 pl-0 ">
-                                <img className="img-fluid" src={record.fields["Image"][0].url} alt={record.fields["Title"]} />
+                            <div className="col-md-2 align-items-top justify-content-center mb-lg-5">
+                                {likeHelperData &&
+                                    <HeartButton id={record.id} userid={likeHelperData.userid} currentVotes={likeHelperData.votes[record.id]} slug={likeHelperData.slug} />
+                                }
                             </div>
                             <div className="col-md-9">
                                 <div class="row">
                                     <h4>{record.fields["Title"]}</h4>
-                                    &nbsp;<a href={record.fields["URL"]} target="_blank" rel="noreferrer" className="btn btn-white text-primary p-0"><FiExternalLink /></a>
+                                </div>
+                                <div class="row">                                    
+                                    <Badge variant={badgeVariant[record.fields["Status"]]}>{record.fields["Status"]}</Badge>
                                 </div>
                                 <div class="row">
-                                    <p>{record.fields["Subtitle"]}</p>
+                                    <p>{record.fields["Details"]}</p>
                                 </div>
-                            </div>
-                            <div className="col-md-1 d-flex align-items-top mb-lg-5">
-                                {likeHelperData &&
-                                    <HeartButton id={record.id} userid={likeHelperData.userid} currentVotes={likeHelperData.votes[record.id]} slug={likeHelperData.slug} />
-                                }                                
                             </div>
                         </div>
                     )}
@@ -49,4 +56,4 @@ class ProductHunt extends React.Component {
 }
 
 
-export default ProductHunt;
+export default FeatureRequest;

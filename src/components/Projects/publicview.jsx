@@ -8,6 +8,7 @@ import LayoutPublic from "../Layout/public"
 
 import ProductHuntTemplate from './PublicTemplates/ProductHunt'
 import BlogTemplate from './PublicTemplates/Blog'
+import FeatureRequestTemplate from './PublicTemplates/FeatureRequest'
 
 const ProjectPublicView = props => {
 
@@ -105,6 +106,12 @@ const ProjectPublicView = props => {
                 {!loading && records.length > 0 && template === "template_001_blog" &&
                     <BlogTemplate title={title} records={records} />
                 }
+
+                {!loading && records.length > 0 && template === "template_003_featurerequest" &&
+                    <FeatureRequestTemplate title={title} records={records} likeHelperData={likeHelperData} />
+                }
+
+                
             </div>
         </LayoutPublic>
     )

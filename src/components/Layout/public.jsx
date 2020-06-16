@@ -12,7 +12,7 @@ const LayoutPublic = ({ location, title, children }) => {
     <div>
       <Card border="light">
       <Card.Header as="h1" className="text-center bg-primary text-light"><br/>{title}<br/><br/></Card.Header>
-        <Card.Body>
+        <Card.Body className="bg-light">
             <main>{children}</main>
         </Card.Body>
         <Card.Footer className="text-muted"><Footer /></Card.Footer>
