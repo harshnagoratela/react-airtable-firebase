@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {Alert} from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
 import Airtable from 'airtable';
 import firebase from "gatsby-plugin-firebase"
@@ -18,6 +19,8 @@ const ProjectPublicView = props => {
     const [title, setTitle] = useState("");
     const [loading, setLoading] = useState(true);
     const [template, setTemplate] = useState();
+    const [airtableApiKey, setAirtableApiKey] = useState();
+    const [airtableBaseId, setAirtableBaseId] = useState();
 
     React.useEffect(() => {
         firebase
@@ -35,14 +38,18 @@ const ProjectPublicView = props => {
                 if (snapshotVal && snapshotVal.viewName) { viewName = snapshotVal.viewName }
                 if (snapshotVal && snapshotVal.selectedTemplate) { setTemplate(snapshotVal.selectedTemplate); }
                 console.log("*** Template = " + template)
+                if(error) {setLoading(false);}
 
                 if (snapshotVal && snapshotVal.apiKey && snapshotVal.baseId && snapshotVal.tableName) {
                     setTitle(snapshotVal.title);
 
                     const base = new Airtable({ apiKey: snapshotVal.apiKey }).base(snapshotVal.baseId);
-
-                    base(snapshotVal.tableName).select({ view: viewName })
-                        .eachPage(
+                    setAirtableApiKey(snapshotVal.apiKey)
+                    setAirtableBaseId(snapshotVal.baseId)
+                    base(snapshotVal.tableName).select({ 
+                        view: viewName, 
+                        filterByFormula: '{IsPublished}=1'
+                    }).eachPage(
                             (records, fetchNextPage) => {
                                 setRecords(records);
                                 console.log("***** Found '" + records.length + "' records from Airtable");
@@ -86,17 +93,14 @@ const ProjectPublicView = props => {
                 }
 
                 {error &&
-                    <div className="flex justify-center">
-                        <div className="bg-red-100 items-center border-t-4 border-red-600 rounded-b text-red-800 px-4 py-3 shadow-md my-2 w-1/2" role="alert">
-                            <div className="flex">
-                                <div>
-                                    <p className="font-bold">Error(s) Found</p>
-                                    <p className="text-sm">{error}</p>
-                                    <p className="text-sm">Please make sure to rectify it and re-visit this page again</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <Alert variant="danger">
+                        <Alert.Heading>Error(s) Found</Alert.Heading>
+                        <p>{error}</p>
+                        <hr />
+                        <p className="mb-0">
+                            Please make sure to rectify it and re-visit this page again
+                        </p>
+                    </Alert>
                 }
 
                 {!loading && records.length > 0 && template === "template_002_producthunt" &&
@@ -108,10 +112,10 @@ const ProjectPublicView = props => {
                 }
 
                 {!loading && records.length > 0 && template === "template_003_featurerequest" &&
-                    <FeatureRequestTemplate title={title} records={records} likeHelperData={likeHelperData} />
+                    <FeatureRequestTemplate title={title} records={records} likeHelperData={likeHelperData} airtableApiKey={airtableApiKey} airtableBaseId={airtableBaseId} />
                 }
 
-                
+
             </div>
         </LayoutPublic>
     )
