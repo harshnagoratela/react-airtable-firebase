@@ -1,15 +1,28 @@
 import React, { useState } from 'react';
-import {Alert} from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
 import Airtable from 'airtable';
 import firebase from "gatsby-plugin-firebase"
 import Loader from 'react-loader-spinner'
-
 import LayoutPublic from "../Layout/public"
-
 import ProductHuntTemplate from './PublicTemplates/ProductHunt'
 import BlogTemplate from './PublicTemplates/Blog'
 import FeatureRequestTemplate from './PublicTemplates/FeatureRequest'
+import { createGlobalStyle } from "styled-components"
+
+// Global styles.
+const GlobalStyles = createGlobalStyle`
+  body {
+    font-family: ${props => (props.fonts ? props.fonts : '"Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"')} !important;
+  }
+  .bg-primary, .btn-primary {
+    background-color: ${props => (props.primarycolor ? props.primarycolor : "#008cba")} !important;
+    border-color: ${props => (props.primarycolor ? props.primarycolor : "#008cba")} !important;
+  }
+  .icons-color {
+    color: ${props => (props.primarycolor ? props.primarycolor : "#008cba")} !important;
+  }
+`
 
 const ProjectPublicView = props => {
 
@@ -21,6 +34,12 @@ const ProjectPublicView = props => {
     const [template, setTemplate] = useState();
     const [airtableApiKey, setAirtableApiKey] = useState();
     const [airtableBaseId, setAirtableBaseId] = useState();
+    const [settingsTitle, setSettingsTitle] = useState(title);
+    const [settingsSubTitle, setSettingsSubTitle] = useState("");
+    const [settingsMetaDescription, setSettingsMetaDescription] = useState("");
+    const [settingsMetaKeywords, setSettingsMetaKeywords] = useState("");
+    const [settingsPrimaryColor, setSettingsPrimaryColor] = useState();
+    const [settingsFonts, setSettingsFonts] = useState();
 
     React.useEffect(() => {
         firebase
@@ -38,7 +57,7 @@ const ProjectPublicView = props => {
                 if (snapshotVal && snapshotVal.viewName) { viewName = snapshotVal.viewName }
                 if (snapshotVal && snapshotVal.selectedTemplate) { setTemplate(snapshotVal.selectedTemplate); }
                 console.log("*** Template = " + template)
-                if(error) {setLoading(false);}
+                if (error) { setLoading(false); }
 
                 if (snapshotVal && snapshotVal.apiKey && snapshotVal.baseId && snapshotVal.tableName) {
                     setTitle(snapshotVal.title);
@@ -46,17 +65,48 @@ const ProjectPublicView = props => {
                     const base = new Airtable({ apiKey: snapshotVal.apiKey }).base(snapshotVal.baseId);
                     setAirtableApiKey(snapshotVal.apiKey)
                     setAirtableBaseId(snapshotVal.baseId)
-                    base(snapshotVal.tableName).select({ 
-                        view: viewName, 
+                    base(snapshotVal.tableName).select({
+                        view: viewName,
                         filterByFormula: '{IsPublished}=1'
                     }).eachPage(
-                            (records, fetchNextPage) => {
-                                setRecords(records);
-                                console.log("***** Found '" + records.length + "' records from Airtable");
-                                console.log(records)
-                                fetchNextPage();
+                        (records, fetchNextPage) => {
+                            setRecords(records);
+                            console.log("***** Found '" + records.length + "' records from Airtable");
+                            console.log(records)
+                            fetchNextPage();
+                        }
+                    ).then(getVotesData());
+
+                    //Get "Settings" from Airtable
+                    base('Settings').select({
+                        view: "Grid view"
+                    }).eachPage(function page(records, fetchNextPage) {
+                        records.forEach(function (record) {
+                            let variable = record.get('setting');
+                            let value = record.get('value');
+                            console.log(record)
+                            console.log("++++++" + variable + " = " + value)
+                            if (variable === "title") {
+                                setSettingsTitle(value);
+                            } else if (variable === "subtitle") {
+                                setSettingsSubTitle(value);
+                            } else if (variable === "metadescription") {
+                                setSettingsMetaDescription(value);
+                            } else if (variable === "metakeywords") {
+                                setSettingsMetaKeywords(value);
+                            } else if (variable === "primarycolor") {
+                                setSettingsPrimaryColor(value);
+                            } else if (variable === "fonts") {
+                                setSettingsFonts(value);
                             }
-                        ).then(getVotesData());
+                            console.log("+++++++++++++++++");
+                            console.log(settingsPrimaryColor);
+                            console.log(settingsFonts);
+                        });
+                        fetchNextPage();
+                    }, function done(err) {
+                        if (err) { console.error("ERROR while fetching settings : " + err + ", So using default settings..."); return; }
+                    });
                 }
             }, [props.userid, props.slug]);
     }, [loading, template]);
@@ -83,10 +133,45 @@ const ProjectPublicView = props => {
     }
 
     return (
-        <LayoutPublic title={title}>
-            <Helmet title={`Hyper - ${title}`}>
-
-            </Helmet>
+        <LayoutPublic title={settingsTitle} subtitle={settingsSubTitle}>
+            <GlobalStyles fonts={settingsFonts} primarycolor={settingsPrimaryColor} />
+            <Helmet
+                title={`Hyper - ${settingsTitle}`}
+                meta={[
+                    {
+                        name: `description`,
+                        content: settingsMetaDescription,
+                    },
+                    {
+                        name: `keywords`,
+                        content: settingsMetaKeywords,
+                    },
+                    {
+                        property: `og:title`,
+                        content: settingsTitle,
+                    },
+                    {
+                        property: `og:description`,
+                        content: settingsMetaDescription,
+                    },
+                    {
+                        property: `og:type`,
+                        content: `website`,
+                    },
+                    {
+                        name: `twitter:card`,
+                        content: `summary`,
+                    },
+                    {
+                        name: `twitter:title`,
+                        content: settingsTitle,
+                    },
+                    {
+                        name: `twitter:description`,
+                        content: settingsMetaDescription,
+                    },
+                ]}
+            />
             <div className="App">
                 {loading &&
                     <div className="text-center"><Loader type="Bars" color="#00BFFF" height={30} width={80} /></div>
@@ -108,7 +193,7 @@ const ProjectPublicView = props => {
                 }
 
                 {!loading && records.length > 0 && template === "template_001_blog" &&
-                    <BlogTemplate title={title} records={records} />
+                    <BlogTemplate title={title} records={records} likeHelperData={likeHelperData} />
                 }
 
                 {!loading && records.length > 0 && template === "template_003_featurerequest" &&

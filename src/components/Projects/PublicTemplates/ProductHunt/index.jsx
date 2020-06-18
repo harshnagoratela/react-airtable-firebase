@@ -29,7 +29,7 @@ class ProductHunt extends React.Component {
                             <div className="col-md-9">
                                 <div className="row">
                                     <h4>{record.fields["Title"]}</h4>
-                                    &nbsp;<a href={record.fields["URL"]} target="_blank" rel="noreferrer" className="btn btn-white text-primary p-0"><FiExternalLink /></a>
+                                    &nbsp;<a href={record.fields["URL"]} target="_blank" rel="noreferrer" className="btn btn-white text-primary p-0"><FiExternalLink className="icons-color" /></a>
                                 </div>
                                 <div className="row">
                                     <p>{record.fields["Subtitle"]}</p>

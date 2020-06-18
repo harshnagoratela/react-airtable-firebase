@@ -7,8 +7,7 @@ module.exports = {
     description: `Hyperlyst`
   },
   plugins: [
-    `gatsby-plugin-react-helmet`,
-    
+    `gatsby-plugin-react-helmet`,    
     {
       resolve: `gatsby-plugin-prefetch-google-fonts`,
       options: {
@@ -47,6 +46,7 @@ module.exports = {
         }
       }
     },
+    `gatsby-plugin-styled-components`,
     `gatsby-plugin-netlify`
   ]
 }

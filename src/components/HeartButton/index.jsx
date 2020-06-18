@@ -43,7 +43,7 @@ class HeartButton extends React.Component {
                     onClick={this.addLike}
                 >
                     {!liked &&
-                        <FaRegHeart style={{ marginBottom: "3px", display:"inline-block", color: "#33c3f0" }} />
+                        <FaRegHeart className="icons-color" style={{ marginBottom: "3px", display:"inline-block" }} />
                     }
                     {liked &&
                         <FaHeart style={{ marginBottom: "3px", display:"inline-block", color: "red" }} />
