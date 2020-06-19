@@ -87,7 +87,7 @@ const Projects = () => {
                             <table className="w-100">
                                 <tr>
                                     <td className="w-50">
-                                        <Link to={`/public/${user.uid}/project/${project.slug}`} target="_blank">Copy Public URL... </Link>
+                                        <Link to={`/public/${user.uid}/project/${project.slug}`} target="_blank">View Public URL... </Link>
                                     </td>
                                     <td class="float-right">
                                         <button className="border-0 p-0" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) deleteProject(project.slug) } }>
