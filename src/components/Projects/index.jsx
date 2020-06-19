@@ -4,7 +4,8 @@ import { getUser } from "../../utils/auth"
 import firebase from "gatsby-plugin-firebase"
 import { Link } from "gatsby"
 import Loader from 'react-loader-spinner'
-import {Alert, Card, CardColumns } from "react-bootstrap"
+import { Alert, Card, CardColumns } from "react-bootstrap"
+import { RiDeleteBinLine } from "react-icons/ri"
 
 const Projects = () => {
     const user = getUser();
@@ -31,6 +32,17 @@ const Projects = () => {
                 });
         }
     }, [loading, projects, user])
+
+    const deleteProject = (slug) => {
+        console.log("*********** deleteProject")
+        console.log(`users/${user.uid}/projects/${slug}`)
+        firebase
+            .database()
+            .ref()
+            .child(`users/${user.uid}/projects/${slug}`)
+            .remove()
+            .then(() => window.location.reload());
+    };
 
     return (
         <>
@@ -72,7 +84,18 @@ const Projects = () => {
                     </div>*/}
                         </Card.Body>
                         <Card.Footer>
-                            <Link to={`/public/${user.uid}/project/${project.slug}`} target="_blank">See Public View...</Link>
+                            <table className="w-100">
+                                <tr>
+                                    <td className="w-50">
+                                        <Link to={`/public/${user.uid}/project/${project.slug}`} target="_blank">Copy Public URL... </Link>
+                                    </td>
+                                    <td class="float-right">
+                                        <button className="border-0 p-0" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) deleteProject(project.slug) } }>
+                                            <RiDeleteBinLine size="20" className="text-danger" />
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
                         </Card.Footer>
                     </Card>
                 ))}

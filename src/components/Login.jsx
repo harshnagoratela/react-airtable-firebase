@@ -2,7 +2,7 @@ import React from "react"
 import { navigate } from '@reach/router';
 import View from "./View"
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import { setUser, isLoggedIn } from "../utils/auth"
+import { setUser, setUserExtras, isLoggedIn } from "../utils/auth"
 import firebase from "gatsby-plugin-firebase"
 
 const Login = () => {
@@ -21,6 +21,9 @@ const Login = () => {
       // signInSuccessUrl: '/',
       callbacks: {
         signInSuccessWithAuthResult: (result) => {
+          firebase.database().ref('users/' + result.user.uid).once("value", snap => {
+            setUserExtras(snap.val() || {})
+          })
           setUser(result.user);
           navigate('/');
         }

@@ -22,7 +22,7 @@ export default () => {
         <a href="/" onClick={event => { event.preventDefault(); logout(firebase).then(() => navigate(`/app/login`)) }}>
           <u>log out</u>
         </a>
-      </div>
+      </div> 
     )
   }
 
