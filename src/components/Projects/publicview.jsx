@@ -22,6 +22,16 @@ const GlobalStyles = createGlobalStyle`
   .icons-color {
     color: ${props => (props.primarycolor ? props.primarycolor : "#008cba")} !important;
   }
+  .postStatus.planned {
+    color: ${props => (props.primarycolor ? props.primarycolor : "#008cba")} !important;
+  }
+  .postVotes .upvote.voted {
+    border-bottom: 9px solid ${props => (props.primarycolor ? props.primarycolor : "#008cba")} !important;
+  }  
+  .postVotes:hover .upvote.voted {
+    border-bottom: 9px solid ${props => (props.primarycolor ? props.primarycolor : "#008cba")} !important;
+  }
+  
 `
 
 const ProjectPublicView = props => {
@@ -112,7 +122,7 @@ const ProjectPublicView = props => {
     }, [loading, template]);
 
     const getVotesData = () => {
-        //getting votes data
+        //getting votes data 
         firebase
             .database()
             .ref(`users/${props.userid}/projects/${props.slug}/votes`)
