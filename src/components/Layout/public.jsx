@@ -9,14 +9,23 @@ const LayoutPublic = ({ location, title, subtitle, children }) => {
     <div>
       <Card border="light">
         <br />
-        {title &&
-          <Card.Header as="h1" className="text-dark bg-white border-0">{title}</Card.Header>
-        }
-        {subtitle &&
-          <Card.Header as="h3" className="text-dark bg-white border-0">{subtitle}</Card.Header>
-        }
-        <br />
-        <Card.Body className="bg-light p-0 border-top">
+        <div className="publicNav">
+          <div className="contentContainer">
+            <div className="contentInnerContainer">
+              <div className="publicNavContent">
+                <div className="mainNav">
+                  <a className="company">
+                    <div className="logoContainer">
+                      <div className="companyLogo"></div>
+                      <div className="companyName">{title}</div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Card.Body className="bg-light p-0">
           <main>{children}</main>
         </Card.Body>
         <Card.Footer className="text-muted"><Footer /></Card.Footer>
