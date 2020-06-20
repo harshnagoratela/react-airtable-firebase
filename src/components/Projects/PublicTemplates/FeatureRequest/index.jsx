@@ -143,7 +143,7 @@ class FeatureRequest extends React.Component {
                                                                             <span className="label">Create Post</span>
                                                                         </button>
                                                                     </div>
-                                                                    {this.state.loading && 
+                                                                    {this.state.loading &&
                                                                         <div className="pl-1 pt-2">
                                                                             <Loader type="ThreeDots" color="#00BFFF" height={10} width={80} />
                                                                         </div>
@@ -164,6 +164,28 @@ class FeatureRequest extends React.Component {
                                                         <div className="mainContainer">
                                                             <div className="postListContainer">
                                                                 <div className="postList">
+                                                                    <div className="topContainer">
+                                                                        <div className="postListMenu">
+                                                                            <div className="menu">
+                                                                                <div className="text">Showing</div>
+                                                                                <div className="selector">
+                                                                                    <div className="selectedName">Trending</div>
+                                                                                    <div className="icon-chevron-down"></div>
+                                                                                </div>
+                                                                                <div className="text">posts</div>
+                                                                            </div>
+                                                                            <div className="searchContainer">
+                                                                                <div className="searchBar">
+                                                                                    <div className="textInput searchInput">
+                                                                                        <div className="inset">
+                                                                                            <div className="icon icon-search"></div>
+                                                                                        </div>
+                                                                                        <div className="inputContainer"><input type="text" placeholder="Search…" value="" /></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                     <div className="posts">
                                                                         {records.length > 0 && records.map((record, index) =>
                                                                             <div className="postListItem">
@@ -180,6 +202,7 @@ class FeatureRequest extends React.Component {
                                                                                             <div className="truncate">{record.fields["Details"]}</div>
                                                                                         </div>
                                                                                     </div>
+                                                                                    <div class="postCommentCount"><span class="icon icon-comment"></span><span>0</span></div>
                                                                                 </a>
                                                                             </div>
                                                                         )}

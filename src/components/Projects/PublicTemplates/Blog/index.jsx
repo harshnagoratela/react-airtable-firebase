@@ -17,11 +17,11 @@ class BlogTemplate extends React.Component {
 
         return (
             <>
-                <div className="container blogcontainer bg-white">
+                <div className="bg-white p-3">
                     {records.length > 0 && records.map((record, index) =>
                         <div key={index} className="row">
                             <div className="col">                                
-                                <div className="row border-bottom mb-3">
+                                <div className="row">
                                     <div className="col-lg-10">
                                     <h1 className="">{record.fields["Title"]}</h1>
                                         by{`  `}

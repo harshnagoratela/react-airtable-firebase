@@ -8,6 +8,7 @@ import LayoutPublic from "../Layout/public"
 import ProductHuntTemplate from './PublicTemplates/ProductHunt'
 import BlogTemplate from './PublicTemplates/Blog'
 import FeatureRequestTemplate from './PublicTemplates/FeatureRequest'
+import './PublicTemplates/public.styles.css'
 import { createGlobalStyle } from "styled-components"
 
 // Global styles.

@@ -32,6 +32,28 @@ class ProductHunt extends React.Component {
                                                     <div className="mainContainer">
                                                         <div className="postListContainer">
                                                             <div className="postList">
+                                                                <div className="topContainer">
+                                                                    <div className="postListMenu">
+                                                                        <div className="menu">
+                                                                            <div className="text">Showing</div>
+                                                                            <div className="selector">
+                                                                                <div className="selectedName">Trending</div>
+                                                                                <div className="icon-chevron-down"></div>
+                                                                            </div>
+                                                                            <div className="text">posts</div>
+                                                                        </div>
+                                                                        <div className="searchContainer">
+                                                                            <div className="searchBar">
+                                                                                <div className="textInput searchInput">
+                                                                                    <div className="inset">
+                                                                                        <div className="icon icon-search"></div>
+                                                                                    </div>
+                                                                                    <div className="inputContainer"><input type="text" placeholder="Search…" value="" /></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                                 <div className="posts">
                                                                     {records.length > 0 && records.map((record, index) =>
                                                                         <div className="postListItem">
@@ -49,7 +71,7 @@ class ProductHunt extends React.Component {
                                                                                     <div className="postDetails">
                                                                                         <div className="truncate">{record.fields["Subtitle"]}</div>
                                                                                     </div>
-                                                                                </div>
+                                                                                </div>                                                                                
                                                                             </a>
                                                                             {likeHelperData &&
                                                                                 <HeartButton id={record.id} userid={likeHelperData.userid} currentVotes={likeHelperData.votes[record.id]} slug={likeHelperData.slug} />
