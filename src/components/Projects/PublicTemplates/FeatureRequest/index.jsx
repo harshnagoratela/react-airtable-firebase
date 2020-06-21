@@ -96,6 +96,22 @@ class FeatureRequest extends React.Component {
                             <div className="modalContainer">
                                 <div className="toastContainer">
                                     <div className="publicContainer">
+                                        <div className="publicNav">
+                                            <div className="contentContainer">
+                                                <div className="contentInnerContainer">
+                                                    <div className="publicNavContent">
+                                                        <div className="mainNav">
+                                                            <a className="company">
+                                                                <div className="logoContainer">
+                                                                    <div className="companyLogo"></div>
+                                                                    <div className="companyName">{title}</div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div className="boardHome">
                                             <div className="contentContainer">
                                                 <div className="contentInnerContainer">

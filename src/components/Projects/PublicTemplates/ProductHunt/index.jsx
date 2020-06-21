@@ -25,6 +25,22 @@ class ProductHunt extends React.Component {
                         <div className="modalContainer">
                             <div className="toastContainer">
                                 <div className="publicContainer">
+                                    <div className="publicNav">
+                                        <div className="contentContainer">
+                                            <div className="contentInnerContainer">
+                                                <div className="publicNavContent">
+                                                    <div className="mainNav">
+                                                        <a className="company">
+                                                            <div className="logoContainer">
+                                                                <div className="companyLogo"></div>
+                                                                <div className="companyName">{title}</div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className="boardHome">
                                         <div className="contentContainer">
                                             <div className="contentInnerContainer">
@@ -56,7 +72,7 @@ class ProductHunt extends React.Component {
                                                                 </div>
                                                                 <div className="posts">
                                                                     {records.length > 0 && records.map((record, index) =>
-                                                                        <div className="postListItem">
+                                                                        <div className="postListItem row">
                                                                             <div className="col-md-2 pl-0 ">
                                                                                 <img className="img-fluid" src={record.fields["Image"][0].url} alt={record.fields["Title"]} />
                                                                             </div>
@@ -71,7 +87,7 @@ class ProductHunt extends React.Component {
                                                                                     <div className="postDetails">
                                                                                         <div className="truncate">{record.fields["Subtitle"]}</div>
                                                                                     </div>
-                                                                                </div>                                                                                
+                                                                                </div>
                                                                             </a>
                                                                             {likeHelperData &&
                                                                                 <HeartButton id={record.id} userid={likeHelperData.userid} currentVotes={likeHelperData.votes[record.id]} slug={likeHelperData.slug} />
