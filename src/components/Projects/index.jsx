@@ -1,37 +1,26 @@
 import React from "react"
 import { useState } from "react"
-import { getUser } from "../../utils/auth"
+import { getUser, getUserExtras } from "../../utils/auth"
 import firebase from "gatsby-plugin-firebase"
 import { Link } from "gatsby"
 import Loader from 'react-loader-spinner'
-import { Alert, Card, CardColumns } from "react-bootstrap"
+import { Alert, Card, Accordion } from "react-bootstrap"
 import { RiDeleteBinLine } from "react-icons/ri"
+import Statistics from "../Statistics"
 
 const Projects = () => {
     const user = getUser();
+    const userExtras = getUserExtras();
 
     const [loading, setLoading] = useState(true);
     const [projects, setProjects] = useState([]);
 
     React.useEffect(() => {
-        if (loading && !projects.length) {
-            firebase
-                .database()
-                .ref(`users/${user.uid}/projects`)
-                .once("value")
-                .then(snapshot => {
-                    let posts = [];
-                    const snapshotVal = snapshot.val();
-                    for (let slug in snapshotVal) {
-                        posts.push(snapshotVal[slug]);
-                    }
-
-                    const newestFirst = posts.reverse();
-                    setProjects(newestFirst);
-                    setLoading(false);
-                });
+        if (loading && !projects.length && userExtras) {
+            setProjects(Object.values(userExtras.projects));
+            setLoading(false);
         }
-    }, [loading, projects, user])
+    }, [loading])
 
     const deleteProject = (slug) => {
         console.log("*********** deleteProject")
@@ -49,57 +38,61 @@ const Projects = () => {
             {loading &&
                 <div className="text-center"><Loader type="Bars" color="#00BFFF" height={30} width={80} /></div>
             }
-            <CardColumns>
-                {projects.map(project => (
-                    <Card key={project.slug} style={{ margin: "10px" }}>
-                        <Card.Header className="bg-primary">{project.title}</Card.Header>
-                        <Card.Body>
-                            <table className="table">
-                                <tbody>
-                                    <tr>
-                                        <th>Project Template Code</th>
-                                        <td>{project.selectedTemplate}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Airtable API Key</th>
-                                        <td>{project.apiKey}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Airtable Base ID</th>
-                                        <td>{project.baseId}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Airtable Table Name</th>
-                                        <td>{project.tableName}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Airtable View Name</th>
-                                        <td>{project.viewName}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                            {/*<div className="flex justify-end mt-4">
-                        <Link to={`/app/project/create`} state={{ mode: "edit", userid: user.uid, slug: project.slug }} className="text-xl font-medium text-indigo-500">Edit Project...</Link>
-                    </div>*/}
-                        </Card.Body>
-                        <Card.Footer>
-                            <table className="w-100">
-                                <tr>
-                                    <td className="w-50">
-                                        <Link to={`/public/${user.uid}/project/${project.slug}`} target="_blank">View Public URL... </Link>
-                                    </td>
-                                    <td class="float-right">
-                                        <button className="border-0 p-0" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) deleteProject(project.slug) } }>
-                                            <RiDeleteBinLine size="20" className="text-danger" />
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </Card.Footer>
+            <Link to={`/app/project/create`} className="btn btn-primary">Create New Page...</Link>
+            <Statistics />
+            <Accordion defaultActiveKey="0">
+                {projects && projects.map(project => (
+                    <Card key={project.slug} className="border-primary">
+                        <Accordion.Toggle as={Card.Header} eventKey={project.slug} className="bg-primary text-white">
+                            {project.title}{`  `}[Click to see details]
+                        </Accordion.Toggle>
+                        <Accordion.Collapse eventKey={project.slug}>
+                            <>
+                                <Card.Body>
+                                    <table className="table">
+                                        <tbody>
+                                            <tr>
+                                                <th>Project Template Code</th>
+                                                <td>{project.selectedTemplate}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Airtable API Key</th>
+                                                <td>{project.apiKey}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Airtable Base ID</th>
+                                                <td>{project.baseId}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Airtable Table Name</th>
+                                                <td>{project.tableName}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Airtable View Name</th>
+                                                <td>{project.viewName}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </Card.Body>
+                                <Card.Footer>
+                                    <table className="w-100">
+                                        <tr>
+                                            <td className="w-50">
+                                                <Link to={`/public/${user.uid}/project/${project.slug}`} target="_blank">View Public URL... </Link>
+                                            </td>
+                                            <td class="float-right">
+                                                <button className="border-0 p-0" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) deleteProject(project.slug) }}>
+                                                    <RiDeleteBinLine size="20" className="text-danger" />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </Card.Footer>
+                            </>
+                        </Accordion.Collapse>
                     </Card>
                 ))}
-            </CardColumns>
+            </Accordion>
             {!loading && projects.length <= 0 &&
                 <Alert variant="info">
                     <Alert.Heading>No Projects Found OR Projects are loading !!</Alert.Heading>

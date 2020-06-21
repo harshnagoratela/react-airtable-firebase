@@ -8,6 +8,19 @@ import firebase from "gatsby-plugin-firebase"
 import _ from "lodash"
 import Loader from 'react-loader-spinner'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import styled from "styled-components"
+
+const NumberedList = styled.ol`
+  list-style: decimal;
+`
+const FormTitle = styled.h1`
+    font-size: 1.5rem;
+    font-color: white;
+`
+
+const HelpTitle = styled.h1`
+    font-size: 1.75rem;
+`
 
 const ProjectCreate = ({ location }) => {
     const user = getUser();
@@ -138,7 +151,7 @@ const ProjectCreate = ({ location }) => {
                     <div className="col-lg-6">
                         <div className="card">
                             <div className="card-header bg-primary text-white">
-                                <h3>Create Project!</h3>
+                                <FormTitle>Create Page!</FormTitle>
                                 <p> Input details of your Airtable project. All fields are mandatory.</p>
                             </div>
                             <div className="card-body">
@@ -146,7 +159,7 @@ const ProjectCreate = ({ location }) => {
                                     <fieldset className="border p-3">
                                         <legend className="font-bold">Template Selection</legend>
                                         <div>
-                                            <label>
+                                            <label className="py-2">
                                                 Select Template to be used
                                             </label>
                                             <Select
@@ -156,7 +169,7 @@ const ProjectCreate = ({ location }) => {
                                             />
                                         </div>
                                         <div className="pt-2">
-                                            <label>
+                                            <label className="py-2">
                                                 Default mandatory columns of the template
                                             </label>
                                             <input
@@ -170,12 +183,12 @@ const ProjectCreate = ({ location }) => {
                                             />
                                         </div>
                                         <div className="pt-2">
-                                            <label>
+                                            <label className="py-2">
                                                 Use below button to Copy Template's Airtable Base
                                             </label>
                                             <div>
                                                 <OverlayTrigger key="copybase" placement="top" overlay={<Tooltip id="copybase">Refer <strong>Help Item#1</strong> for more details</Tooltip>}>
-                                                    <a href={airtableBaseCopy} target="_blank" rel="noreferrer" className="text-primary p-2 w-100">
+                                                    <a href={airtableBaseCopy} target="_blank" rel="noreferrer" className="btn btn-primary">
                                                         Copy Template Base
                                                 </a>
                                                 </OverlayTrigger>
@@ -276,22 +289,22 @@ const ProjectCreate = ({ location }) => {
                         </div>
                     </div>
                     <div className="col-lg-6">
-                        <h2>Page Create Help</h2>
-                        <ol>
-                            <li>
+                        <HelpTitle>Page Create Help</HelpTitle>
+                        <NumberedList>
+                            <li className="pt-3">
                                 Clicking "Copy Template Base" will open a new browser tab.
                                 Switch to the newly opend tab and click on "Copy base" (in the upper right corner) to copy it to your Airtable account.
                                 <br /><img src="/images/copy-base-example.png" width="100%" />
                             </li>
-                            <li>
+                            <li className="pt-3">
                                 To find your Airtable Base ID, go to https://airtable.com/api/. Then Click on your base and copy the ID from the URL.
                                 <br /><img src="/images/get-baseid-example.png" width="100%" />
                             </li>
-                            <li>
+                            <li className="pt-3">
                                 Go to the actual Base in Airtable and get <i>TableName</i> and <i>ViewName</i> as mentioned in below screenshot
                                 <br /><img src="/images/get-table-view-example.png" width="100%" />
                             </li>
-                        </ol>
+                        </NumberedList>
                     </div>
                 </div>
             </div>

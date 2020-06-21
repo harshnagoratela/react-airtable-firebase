@@ -23,7 +23,6 @@ const Header = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
             <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/app/project/create">Create Page</Nav.Link>
             {!isLoggedIn() &&
               <Nav.Link href="/app/login">Login</Nav.Link>
             }
@@ -34,6 +33,9 @@ const Header = () => {
                     <div className="row">
                       <div className="col-lg-12">
                         <p className="text-left"> 
+                          <button className="btn btn-success btn-block btn-sm" onClick={()=>navigate(`/app/projects`)}>
+                            Admin Console
+                          </button>
                           <button className="btn btn-primary btn-block btn-sm" onClick={()=>navigate(`/app/profile`)}>
                             View Profile
                           </button>

@@ -1,18 +1,20 @@
 import React from "react"
-import { Card } from "react-bootstrap"
+import Statistics from "./Statistics"
 import { getUser, getUserExtras } from "../utils/auth"
+import { Helmet } from 'react-helmet';
 
 const Profile = () => {
   const user = getUser();
   const userExtras = getUserExtras();
-  console.log(userExtras)
-  const projects = (userExtras && userExtras.projects) ? Object.keys(userExtras.projects).length : 0;
   const plan = userExtras.paymentId ? "paid" : "free";
   const { email, emailVerified } = user;
   const displayName = user.displayName ? user.displayName : "Name not captured";
 
   return (
     <div className="container w-100 mx-auto">
+      <Helmet>
+        <script src="https://gumroad.com/js/gumroad.js"></script>
+      </Helmet>
       <div className="row">
         <div className="col-lg-3">&nbsp;</div>
         <div className="col-lg-6 bg-light p-4">
@@ -25,28 +27,12 @@ const Profile = () => {
           <div className="p-2 bg-white">{`${emailVerified}`}</div>
           <h5 className="mt-3 mb-1">Plan</h5>
           <div className="p-2 bg-white">{`${plan}`}</div>
-          <div className="row m-3">
-            <div className="col-lg-6">
-              <Card border="warning" className="text-center">
-                <Card.Body>
-                  <Card.Title>Total Pages</Card.Title>
-                  <Card.Text>
-                    {projects}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
+          {plan && plan === "free" &&
+            <div className="py-3">
+              <a className="btn btn-success" href="https://gum.co/WHvhf?wanted=true" target="_blank" data-gumroad-single-product="true">Subscribe with us</a>
             </div>
-            <div className="col-lg-6">
-              <Card border="success" className="text-center">
-                <Card.Body>
-                  <Card.Title>Published Pages</Card.Title>
-                  <Card.Text>
-                    {projects}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </div>
-          </div>
+          }
+          <Statistics />
         </div>
         <div className="col-lg-3">&nbsp;</div>
       </div>

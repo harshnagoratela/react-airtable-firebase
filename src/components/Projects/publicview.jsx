@@ -110,6 +110,9 @@ const ProjectPublicView = props => {
                             } else if (variable === "fonts") {
                                 setSettingsFonts(value);
                             }
+                            console.log("+++++++++++++++++");
+                            console.log(settingsPrimaryColor);
+                            console.log(settingsFonts);
                         });
                         fetchNextPage();
                     }, function done(err) {
