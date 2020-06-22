@@ -36,6 +36,9 @@ const Header = () => {
                           <button className="btn btn-success btn-block btn-sm" onClick={()=>navigate(`/app/projects`)}>
                             Admin Console
                           </button>
+                          <button className="btn btn-secondary btn-block btn-sm" onClick={()=>navigate(`/app/activate`)}>
+                            Activate Subscription
+                          </button>
                           <button className="btn btn-primary btn-block btn-sm" onClick={()=>navigate(`/app/profile`)}>
                             View Profile
                           </button>

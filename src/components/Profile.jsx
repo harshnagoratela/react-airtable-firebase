@@ -18,6 +18,7 @@ const Profile = () => {
       <div className="row">
         <div className="col-lg-3">&nbsp;</div>
         <div className="col-lg-6 bg-light p-4">
+          <Statistics />
           <h1>Your Profile</h1>
           <h5 className="mt-3 mb-1">Name</h5>
           <div className="p-2 bg-white">{`${displayName}`}</div>
@@ -31,8 +32,7 @@ const Profile = () => {
             <div className="py-3">
               <a className="btn btn-success" href="https://gum.co/WHvhf?wanted=true" target="_blank" data-gumroad-single-product="true">Subscribe with us</a>
             </div>
-          }
-          <Statistics />
+          }          
         </div>
         <div className="col-lg-3">&nbsp;</div>
       </div>
