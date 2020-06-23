@@ -1,5 +1,6 @@
 import React from "react"
-import { getUser, getUserExtras } from "../utils/auth"
+import { getUser, getUserExtras, getUserType } from "../utils/auth"
+import { refreshUserExtras } from "../utils/firebaseHelpers"
 import { Form } from 'react-bootstrap';
 import firebase from "gatsby-plugin-firebase"
 import axios from 'axios'
@@ -8,75 +9,65 @@ import axios from 'axios'
 const Activation = () => {
   const user = getUser();
   const userExtras = getUserExtras();
-  const plan = userExtras.paymentId ? "paid" : "free";
+  let subscriptionEndDate;
+  if(userExtras.subscription && userExtras.subscription.license && userExtras.subscription.license.purchase && userExtras.subscription.license.purchase.sale_timestamp) {
+    let saleDate = new Date(userExtras.subscription.license.purchase.sale_timestamp);
+    subscriptionEndDate = new Date(saleDate.setMonth(saleDate.getMonth()+1));    
+  }
+  const plan = getUserType();
+  console.log("++++++++ plan = "+plan)
   const { email } = user;
 
   const [validated, setValidated] = React.useState(false);
   const [key, setKey] = React.useState("");
   const [message, setMessage] = React.useState();
+  let license;
 
-  const isLicenseValid = () => {
-
-    const license = {
-      "product_permalink": "WHvhf1",
-      "license_key": "C9B83BEC-DC1A43C1-9CBFF146-7A2277DE"
-    };
+  async function getLicenseDetails() {
     const config = {
       method: 'post',
       url: '/.netlify/functions/validate',
-      params: license,
+      params: {
+        "product_permalink": "WHvhf",
+        "license_key": key
+      },
       baseURL: 'https://gumroad-license-validator.netlify.app',
     }
-
-    axios(config)
-      .then(response => {
-        console.log(response)
-      })
-      .catch(err => {
-        console.error(err);
-      })
-
-    //axios.post(`https://api.gumroad.com/v2/licenses/verify`, { license })
-    /*
-    axios({
-      method: 'post',
-      url: 'https://api.gumroad.com/v2/licenses/verify',
-      data: license,
-      headers: { 'Content-Type': 'multipart/form-data', }
-    })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
-    */
-    return false;
+    try {
+      // fetch data from a url endpoint
+      const response = await axios(config);
+      const data = await response.data;
+      return data;
+    } catch (error) {
+      return false;
+    }
   }
 
-  const handleSubmit = (event) => {
+  function handleSubmit(event) {
     const form = event.currentTarget;
     event.preventDefault();
     event.stopPropagation();
     setValidated(true);
     if (form.checkValidity()) {
       //check from gumroad if the supplied license key is valid or not
-      if (!isLicenseValid("test")) {
-        setMessage("License key is invalid")
-        return;
-      }
-      /*
-      const deleteProject = (slug) => {
-        console.log("*********** deleteProject")
-        console.log(`users/${user.uid}/projects/${slug}`)
-        firebase
+      getLicenseDetails().then(result => {
+        license = result;
+        console.log("******** license = ")
+        console.log(license)
+        if (!license || !license.success) {
+          setMessage("License key is invalid. "+license.message)
+          return;
+        }
+        if(license && license.success){
+          setMessage("License key is valid..........Now attaching it to the user");
+          firebase
             .database()
             .ref()
-            .child(`users/${user.uid}/projects/${slug}`)
-            .remove()
-            .then(() => window.location.reload());
-    };
-    */
+            .child(`users/${user.uid}/subscription`)
+            .set({license})
+            .then(()=>{refreshUserExtras(user);setMessage("Subscription activated successfully. Please 'Logout' and 'Login' back for subscription changes to come into effect");})
+        }
+      })
     }
   };
 
@@ -87,7 +78,7 @@ const Activation = () => {
         <div className="col-lg-6 bg-light p-4">
           <h1>Subscription Activation Service</h1>
           {plan && plan !== "free" &&
-            <h5>You are already having an active subscription till ""</h5>
+            <h5>You are already having an active subscription till {subscriptionEndDate.toString()}</h5>
           }
 
           {plan && plan === "free" &&
@@ -106,7 +97,7 @@ const Activation = () => {
                 />
                 <input type="submit" className="btn btn-primary mt-3" value="Activate"></input>
               </Form>
-              <p className="mt-1 mb-1 text-danger">{message}</p>
+              <p className="mt-1 mb-1 text-primary">{message}</p>
             </div>
           }
         </div>

@@ -4,6 +4,7 @@ import { useState } from "react"
 import Select from "react-select"
 import { navigate } from "@reach/router"
 import { getUser } from "../../utils/auth"
+import { refreshUserExtras } from "../../utils/firebaseHelpers"
 import firebase from "gatsby-plugin-firebase"
 import _ from "lodash"
 import Loader from 'react-loader-spinner'
@@ -138,7 +139,7 @@ const ProjectCreate = ({ location }) => {
             .ref()
             .child(`users/${user.uid}/projects/${slug}`)
             .set(newProject)
-            .then(() => navigate(`/`));
+            .then(() => {refreshUserExtras(user);navigate(`/`)});
     };
 
     return (

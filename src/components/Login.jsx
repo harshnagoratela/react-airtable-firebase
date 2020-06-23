@@ -22,7 +22,7 @@ const Login = () => {
       callbacks: {
         signInSuccessWithAuthResult: (result) => {
           firebase.database().ref('users/' + result.user.uid).once("value", snap => {
-            setUserExtras(snap.val() || {})
+            setUserExtras(snap.val() || {})            
           })
           setUser(result.user);
           navigate('/');
