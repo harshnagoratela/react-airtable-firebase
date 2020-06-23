@@ -31,7 +31,7 @@ const Activation = () => {
         "product_permalink": "WHvhf",
         "license_key": key
       },
-      baseURL: 'https://gumroad-license-validator.netlify.app',
+      baseURL: 'https://hyperlyst-gumroad-license-validator.netlify.app',
     }
     try {
       // fetch data from a url endpoint
