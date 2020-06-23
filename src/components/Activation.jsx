@@ -17,33 +17,24 @@ const Activation = () => {
 
   const isLicenseValid = () => {
 
-const license = {
-  "product_permalink": "WHvhf",
-  "license_key": "C9B83BEC-DC1A43C1-9CBFF146-7A2277DE"
-};
-const config = {
-    method: 'post',
-    url: '/v2/licenses/verify',
-    data: license,
-    baseURL: 'https://api.gumroad.com',
-    headers: {
-        "Content-Type": "multipart/form-data",
-        'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 6.0.1; SM-G900F Build/MMB29M)',
-        "postman-token": "3cbae37a-e7cf-5d7c-522f-3a0be8da6948",
-        "cache-control": "no-cache",
-        "User-Agent":"axios/0.16.2",
-        "Host":"api.gumroad.com"
+    const license = {
+      "product_permalink": "WHvhf1",
+      "license_key": "C9B83BEC-DC1A43C1-9CBFF146-7A2277DE"
+    };
+    const config = {
+      method: 'post',
+      url: '/.netlify/functions/validate',
+      params: license,
+      baseURL: 'https://gumroad-license-validator.netlify.app',
     }
-}
 
-
-axios(config)
-.then(response => {
-    console.log(response)
-})
-.catch(err => {
-    console.log(err);
-})
+    axios(config)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(err => {
+        console.error(err);
+      })
 
     //axios.post(`https://api.gumroad.com/v2/licenses/verify`, { license })
     /*
