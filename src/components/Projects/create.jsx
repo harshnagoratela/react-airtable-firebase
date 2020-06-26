@@ -3,12 +3,12 @@ import { Link } from "gatsby"
 import { useState } from "react"
 import Select from "react-select"
 import { navigate } from "@reach/router"
-import { getUser } from "../../utils/auth"
+import { getUser, getUserExtras, getUserType } from "../../utils/auth"
 import { refreshUserExtras } from "../../utils/firebaseHelpers"
 import firebase from "gatsby-plugin-firebase"
 import _ from "lodash"
 import Loader from 'react-loader-spinner'
-import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Alert, Form, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import styled from "styled-components"
 
 const NumberedList = styled.ol`
@@ -25,7 +25,15 @@ const HelpTitle = styled.h1`
 
 const ProjectCreate = ({ location }) => {
     const user = getUser();
+    const userExtras = getUserExtras();
+    const plan = getUserType();
+    const projectCount = (userExtras && userExtras.projects) ? Object.keys(userExtras.projects).length : 0;
+    const MaxProjectsInFreePlan = 3;
+    
     const [loading, setLoading] = useState(true);
+
+    const [error, setError] = useState();
+    const [validated, setValidated] = React.useState(false);
 
     const [templates, setTemplates] = useState([]);
     const [options, setOptions] = useState([]);
@@ -44,12 +52,6 @@ const ProjectCreate = ({ location }) => {
     const { state = {} } = location
 
     const mode = "create";
-
-    //console.log(location)
-    console.log("************* form mode = " + mode)
-    if (mode && mode === "edit") {
-        findProject(location.state.userid, location.state.slug);
-    }
 
     React.useEffect(() => {
         if (loading && !templates.length) {
@@ -90,38 +92,11 @@ const ProjectCreate = ({ location }) => {
         console.log("****** selectedTemplate = " + selectedTemplate)
     }
 
-    function findProject(userid, slug) {
-        firebase
-            .database()
-            .ref(`users/${userid}/projects/${slug}`)
-            .once("value")
-            .then(snapshot => {
-                const snapshotVal = snapshot.val();
-                console.log(snapshotVal)
-                if (snapshotVal && snapshotVal.selectedTemplate) {
-                    setSelectedTemplate(snapshotVal.selectedTemplate);
-                    console.log("+++++ selectedTemplate = " + selectedTemplate)
-                }
-                if (snapshotVal && snapshotVal.title) {
-                    setTitle(snapshotVal.title);
-                    setSlug(snapshotVal.slug)
-                }
-                if (snapshotVal && snapshotVal.apiKey) {
-                    setApiKey(snapshotVal.apiKey);
-                }
-                if (snapshotVal && snapshotVal.baseId) {
-                    setBaseId(snapshotVal.baseId);
-                }
-                if (snapshotVal && snapshotVal.tableName) {
-                    setTableName(snapshotVal.tableName);
-                }
-                if (snapshotVal && snapshotVal.viewName) {
-                    setViewName(snapshotVal.viewName);
-                }
-            });
-    };
+    function handleSubmit(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        setValidated(true);
 
-    const createProject = () => {
         const newProject = {
             selectedTemplate,
             title,
@@ -131,6 +106,10 @@ const ProjectCreate = ({ location }) => {
             tableName,
             viewName
         };
+        if(plan=="free" && projectCount>=MaxProjectsInFreePlan) {
+            setError("Only '"+MaxProjectsInFreePlan+"' pages are allowed in FREE plan")
+            return;
+        }
         console.log("*********** createproject")
         console.log(newProject)
         console.log(`users/${user.uid}/projects/${slug}`)
@@ -140,7 +119,8 @@ const ProjectCreate = ({ location }) => {
             .child(`users/${user.uid}/projects/${slug}`)
             .set(newProject)
             .then(() => {refreshUserExtras(user);navigate(`/`)});
-    };
+        
+    }
 
     return (
         <>
@@ -156,7 +136,7 @@ const ProjectCreate = ({ location }) => {
                                 <p> Input details of your Airtable project. All fields are mandatory.</p>
                             </div>
                             <div className="card-body">
-                                <form>
+                                <Form noValidate validated={validated} onSubmit={handleSubmit}>
                                     <fieldset className="border p-3">
                                         <legend className="font-bold">Template Selection</legend>
                                         <div>
@@ -197,8 +177,8 @@ const ProjectCreate = ({ location }) => {
                                         </div>
                                     </fieldset>
                                     <div className="form-group">
-                                        <input
-                                            className="form-control p-2 mt-3"
+                                        <Form.Control
+                                            className="p-2 mt-3"
                                             id="title"
                                             placeholder="Project Title"
                                             type="text"
@@ -283,9 +263,14 @@ const ProjectCreate = ({ location }) => {
                                         </OverlayTrigger>
                                     </div>
                                     <div className="mx-auto">
-                                        <input type="button" value={`Create Project`} onClick={createProject} className="btn btn-primary" />
+                                        <input type="submit" value={`Create Project`} className="btn btn-primary" />
                                     </div>
-                                </form>
+                                    {error && error.length > 0 &&
+                                    <div className="mx-auto m-2">
+                                        <Alert variant="danger">{error}</Alert>
+                                    </div>
+                                    }
+                                </Form>
                             </div>
                         </div>
                     </div>
