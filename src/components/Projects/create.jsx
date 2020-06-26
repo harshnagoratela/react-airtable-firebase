@@ -29,7 +29,7 @@ const ProjectCreate = ({ location }) => {
     const plan = getUserType();
     const projectCount = (userExtras && userExtras.projects) ? Object.keys(userExtras.projects).length : 0;
     const MaxProjectsInFreePlan = 3;
-    
+
     const [loading, setLoading] = useState(true);
 
     const [error, setError] = useState();
@@ -106,10 +106,18 @@ const ProjectCreate = ({ location }) => {
             tableName,
             viewName
         };
-        if(plan=="free" && projectCount>=MaxProjectsInFreePlan) {
-            setError("Only '"+MaxProjectsInFreePlan+"' pages are allowed in FREE plan")
+        //check if the page with new slug already exists for this user
+        if(userExtras && userExtras.projects && userExtras.projects[`${slug}`]) {
+            setError("Page with this slug '" + slug + "' already exists")
             return;
         }
+
+        //Free plan restriction
+        if (plan == "free" && projectCount >= MaxProjectsInFreePlan) {
+            setError("Only '" + MaxProjectsInFreePlan + "' pages are allowed in FREE plan")
+            return;
+        }
+
         console.log("*********** createproject")
         console.log(newProject)
         console.log(`users/${user.uid}/projects/${slug}`)
@@ -118,8 +126,8 @@ const ProjectCreate = ({ location }) => {
             .ref()
             .child(`users/${user.uid}/projects/${slug}`)
             .set(newProject)
-            .then(() => {refreshUserExtras(user);navigate(`/`)});
-        
+            .then(() => { refreshUserExtras(user); navigate(`/`) });
+
     }
 
     return (
@@ -180,7 +188,7 @@ const ProjectCreate = ({ location }) => {
                                         <Form.Control
                                             className="p-2 mt-3"
                                             id="title"
-                                            placeholder="Project Title"
+                                            placeholder="Page Title"
                                             type="text"
                                             value={title}
                                             required
@@ -194,7 +202,7 @@ const ProjectCreate = ({ location }) => {
                                         <input
                                             className="form-control p-2 mt-3"
                                             id="slug"
-                                            placeholder="Project Slug"
+                                            placeholder="Page Slug"
                                             type="text"
                                             value={slug}
                                             required
@@ -266,9 +274,9 @@ const ProjectCreate = ({ location }) => {
                                         <input type="submit" value={`Create Project`} className="btn btn-primary" />
                                     </div>
                                     {error && error.length > 0 &&
-                                    <div className="mx-auto m-2">
-                                        <Alert variant="danger">{error}</Alert>
-                                    </div>
+                                        <div className="mx-auto m-2">
+                                            <Alert variant="danger">{error}</Alert>
+                                        </div>
                                     }
                                 </Form>
                             </div>
