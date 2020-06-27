@@ -17,13 +17,25 @@ const Profile = () => {
   const { email, emailVerified } = user;
   const displayName = user.displayName ? user.displayName : "Name not captured";
 
+  const unpublishAllPages = () => {
+    Object.values(userExtras.projects).map((project) => {
+      firebase
+        .database()
+        .ref()
+        .child(`users/${user.uid}/projects/${project.slug}/published`)
+        .set(false)
+        .then(()=>{refreshUserExtras(user);console.log('Unpublised = '+project.slug);})
+    })
+  };
+
   const cancelSubscription = () => {
+    unpublishAllPages(); 
     firebase
       .database()
       .ref()
       .child(`users/${user.uid}/subscription`)
       .remove()
-      .then(() => { refreshUserExtras(user); alert('Subscription Cancelled Successfully..!!'); window.location.reload(); })
+      .then(() => {refreshUserExtras(user); alert('Subscription Cancelled Successfully..!!'); window.location.reload(); })
   };
 
   return (

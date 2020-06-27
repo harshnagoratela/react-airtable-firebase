@@ -10,10 +10,10 @@ const LayoutPublic = ({ location, title, subtitle, children }) => {
       <Card border="light">        
         <Card.Body className="bg-light p-0">
           <main>{children}</main>
-        </Card.Body>
-        <Card.Footer className="text-muted"><Footer /></Card.Footer>
+        </Card.Body>        
       </Card>
       <ScrollupButton />
+      <Footer />
     </div>
   )
 }
