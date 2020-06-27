@@ -60,11 +60,14 @@ const ProjectPublicView = props => {
             .then(snapshot => {
                 const snapshotVal = snapshot.val();
                 //console.log(snapshotVal)
-                let viewName = "Grid view";
-                if (!snapshotVal) { setError("ERROR: Unable to find Project Details"); }
-                if (!snapshotVal || !snapshotVal.apiKey) { setError("ERROR: Unable to find 'API KEY' in Project Details"); }
-                if (!snapshotVal || !snapshotVal.baseId) { setError("ERROR: Unable to find 'BASE ID' in Project Details"); }
-                if (!snapshotVal || !snapshotVal.tableName) { setError("ERROR: Unable to find 'TABLE NAME' in Project Details"); }
+                let viewName = "Grid view";                
+                if (!snapshotVal) { setError("ERROR: Unable to find this Page"); }
+                else if (!snapshotVal || !snapshotVal.apiKey) { setError("ERROR: Unable to find 'API KEY' in Project Details"); }
+                else if (!snapshotVal || !snapshotVal.baseId) { setError("ERROR: Unable to find 'BASE ID' in Project Details"); }
+                else if (!snapshotVal || !snapshotVal.tableName) { setError("ERROR: Unable to find 'TABLE NAME' in Project Details"); }
+
+                if(snapshotVal && !snapshotVal.published){ setError("ERROR: Unable to find this Page or Page is not published"); }
+
                 if (snapshotVal && snapshotVal.viewName) { viewName = snapshotVal.viewName }
                 if (snapshotVal && snapshotVal.selectedTemplate) { setTemplate(snapshotVal.selectedTemplate); }
                 console.log("*** Template = " + template)
@@ -190,11 +193,11 @@ const ProjectPublicView = props => {
 
                 {error &&
                     <Alert variant="danger">
-                        <Alert.Heading>Error(s) Found</Alert.Heading>
+                        <Alert.Heading>Error(s) Encountered:</Alert.Heading>
                         <p>{error}</p>
                         <hr />
                         <p className="mb-0">
-                            Please make sure to rectify it and re-visit this page again
+                            Please contact administrator to rectify it and re-visit this page again
                         </p>
                     </Alert>
                 }
