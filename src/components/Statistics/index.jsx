@@ -1,10 +1,12 @@
 import React from "react"
 import { Card } from "react-bootstrap"
 import { getUserExtras } from "../../utils/auth"
+import _ from 'lodash'
 
 const Statistics = () => {
     const userExtras = getUserExtras();
     const projectCount = (userExtras && userExtras.projects) ? Object.keys(userExtras.projects).length : 0;
+    const publishedCount = (userExtras && userExtras.projects) ? _.filter(userExtras.projects, { published: true }).length : 0;
 
     return (
         <div className="row m-3">
@@ -23,7 +25,7 @@ const Statistics = () => {
                     <Card.Body>
                         <Card.Title>Published Pages</Card.Title>
                         <Card.Text>
-                            {projectCount}
+                            {publishedCount}
                         </Card.Text>
                     </Card.Body>
                 </Card>

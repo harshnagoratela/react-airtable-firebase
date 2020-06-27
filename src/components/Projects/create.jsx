@@ -27,9 +27,7 @@ const ProjectCreate = ({ location }) => {
     const user = getUser();
     const userExtras = getUserExtras();
     const plan = getUserType();
-    const projectCount = (userExtras && userExtras.projects) ? Object.keys(userExtras.projects).length : 0;
-    const MaxProjectsInFreePlan = 3;
-
+    
     const [loading, setLoading] = useState(true);
 
     const [error, setError] = useState();
@@ -106,12 +104,6 @@ const ProjectCreate = ({ location }) => {
         //check if the page with new slug already exists for this user
         if (userExtras && userExtras.projects && userExtras.projects[`${slug}`]) {
             setError("Page with this slug '" + slug + "' already exists")
-            return;
-        }
-
-        //Free plan restriction
-        if (plan == "free" && projectCount >= MaxProjectsInFreePlan) {
-            setError("Only '" + MaxProjectsInFreePlan + "' pages are allowed in FREE plan")
             return;
         }
 
