@@ -5,7 +5,6 @@ import { Form } from 'react-bootstrap';
 import firebase from "gatsby-plugin-firebase"
 import axios from 'axios'
 
-
 const Activation = () => {
   const user = getUser();
   const userExtras = getUserExtras();

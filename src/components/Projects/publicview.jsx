@@ -202,15 +202,15 @@ const ProjectPublicView = props => {
                     </Alert>
                 }
 
-                {!loading && records.length > 0 && template === "template_002_producthunt" &&
+                {!loading && !error && records.length > 0 && template === "template_002_producthunt" &&
                     <ProductHuntTemplate title={title} records={records} likeHelperData={likeHelperData} />
                 }
 
-                {!loading && records.length > 0 && template === "template_001_blog" &&
+                {!loading && !error && records.length > 0 && template === "template_001_blog" &&
                     <BlogTemplate title={title} records={records} likeHelperData={likeHelperData} />
                 }
 
-                {!loading && records.length > 0 && template === "template_003_featurerequest" &&
+                {!loading && !error && records.length > 0 && template === "template_003_featurerequest" &&
                     <FeatureRequestTemplate title={title} records={records} likeHelperData={likeHelperData} airtableApiKey={airtableApiKey} airtableBaseId={airtableBaseId} />
                 }
 

@@ -3,7 +3,7 @@ import './footer.css'
 const Footer = () => {
 
   return (
-    <footer className="d-flex">
+    <footer className="d-flex card-footer text-muted">
       <div className="w-100">
         © {new Date().getFullYear()} Copyright, Hyperlyst.com
         </div>
