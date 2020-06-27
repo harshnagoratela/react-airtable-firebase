@@ -97,15 +97,11 @@ const ProjectCreate = ({ location }) => {
         event.stopPropagation();
         setValidated(true);
 
-        const newProject = {
-            selectedTemplate,
-            title,
-            slug,
-            apiKey,
-            baseId,
-            tableName,
-            viewName
-        };
+        if(!selectedTemplate || !title || !slug || !apiKey || !baseId || !tableName || !viewName) {
+            setError("Please enter details for all mandatory fields")
+            return;
+        }
+        
         //check if the page with new slug already exists for this user
         if(userExtras && userExtras.projects && userExtras.projects[`${slug}`]) {
             setError("Page with this slug '" + slug + "' already exists")
@@ -117,6 +113,16 @@ const ProjectCreate = ({ location }) => {
             setError("Only '" + MaxProjectsInFreePlan + "' pages are allowed in FREE plan")
             return;
         }
+
+        const newProject = {
+            selectedTemplate,
+            title,
+            slug,
+            apiKey,
+            baseId,
+            tableName,
+            viewName
+        };
 
         console.log("*********** createproject")
         console.log(newProject)
