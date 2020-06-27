@@ -93,17 +93,18 @@ const ProjectCreate = ({ location }) => {
     }
 
     function handleSubmit(event) {
+        const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
         setValidated(true);
 
-        if(!selectedTemplate || !title || !slug || !apiKey || !baseId || !tableName || !viewName) {
+        if (!selectedTemplate || !title || !slug || !apiKey || !baseId || !tableName || !viewName) {
             setError("Please enter details for all mandatory fields")
             return;
         }
-        
+
         //check if the page with new slug already exists for this user
-        if(userExtras && userExtras.projects && userExtras.projects[`${slug}`]) {
+        if (userExtras && userExtras.projects && userExtras.projects[`${slug}`]) {
             setError("Page with this slug '" + slug + "' already exists")
             return;
         }
@@ -114,25 +115,27 @@ const ProjectCreate = ({ location }) => {
             return;
         }
 
-        const newProject = {
-            selectedTemplate,
-            title,
-            slug,
-            apiKey,
-            baseId,
-            tableName,
-            viewName
-        };
+        if (form.checkValidity()) {
+            const newProject = {
+                selectedTemplate,
+                title,
+                slug,
+                apiKey,
+                baseId,
+                tableName,
+                viewName
+            };
 
-        console.log("*********** createproject")
-        console.log(newProject)
-        console.log(`users/${user.uid}/projects/${slug}`)
-        firebase
-            .database()
-            .ref()
-            .child(`users/${user.uid}/projects/${slug}`)
-            .set(newProject)
-            .then(() => { refreshUserExtras(user); navigate(`/`) });
+            console.log("*********** createproject")
+            console.log(newProject)
+            console.log(`users/${user.uid}/projects/${slug}`)
+            firebase
+                .database()
+                .ref()
+                .child(`users/${user.uid}/projects/${slug}`)
+                .set(newProject)
+                .then(() => { refreshUserExtras(user); navigate(`/`) });
+        }
 
     }
 
