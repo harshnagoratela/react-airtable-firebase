@@ -8,7 +8,6 @@ import LayoutPublic from "../Layout/public"
 import ProductHuntTemplate from './PublicTemplates/ProductHunt'
 import BlogTemplate from './PublicTemplates/Blog'
 import FeatureRequestTemplate from './PublicTemplates/FeatureRequest'
-import './PublicTemplates/public.styles.css'
 import { createGlobalStyle } from "styled-components"
 
 // Global styles.
@@ -60,13 +59,13 @@ const ProjectPublicView = props => {
             .then(snapshot => {
                 const snapshotVal = snapshot.val();
                 //console.log(snapshotVal)
-                let viewName = "Grid view";                
+                let viewName = "Grid view";
                 if (!snapshotVal) { setError("ERROR: Unable to find this Page"); }
                 else if (!snapshotVal || !snapshotVal.apiKey) { setError("ERROR: Unable to find 'API KEY' in Project Details"); }
                 else if (!snapshotVal || !snapshotVal.baseId) { setError("ERROR: Unable to find 'BASE ID' in Project Details"); }
                 else if (!snapshotVal || !snapshotVal.tableName) { setError("ERROR: Unable to find 'TABLE NAME' in Project Details"); }
 
-                if(snapshotVal && !snapshotVal.published){ setError("ERROR: Unable to find this Page or Page is not published"); }
+                if (snapshotVal && !snapshotVal.published) { setError("ERROR: Unable to find this Page or Page is not published"); }
 
                 if (snapshotVal && snapshotVal.viewName) { viewName = snapshotVal.viewName }
                 if (snapshotVal && snapshotVal.selectedTemplate) { setTemplate(snapshotVal.selectedTemplate); }
@@ -185,37 +184,39 @@ const ProjectPublicView = props => {
                         content: settingsMetaDescription,
                     },
                 ]}
-            />
+            >
+                <link rel="stylesheet" href={`/templatecss/${template}.css`} />
+            </Helmet>
             <div className="App">
-                {loading &&
-                    <div className="text-center"><Loader type="Bars" color="#00BFFF" height={30} width={80} /></div>
-                }
+                    {loading &&
+                        <div className="text-center"><Loader type="Bars" color="#00BFFF" height={30} width={80} /></div>
+                    }
 
-                {error &&
-                    <Alert variant="danger">
-                        <Alert.Heading>Error(s) Encountered:</Alert.Heading>
-                        <p>{error}</p>
-                        <hr />
-                        <p className="mb-0">
-                            Please contact administrator to rectify it and re-visit this page again
+                    {error &&
+                        <Alert variant="danger">
+                            <Alert.Heading>Error(s) Encountered:</Alert.Heading>
+                            <p>{error}</p>
+                            <hr />
+                            <p className="mb-0">
+                                Please contact administrator to rectify it and re-visit this page again
                         </p>
-                    </Alert>
-                }
+                        </Alert>
+                    }
 
-                {!loading && !error && records.length > 0 && template === "template_002_producthunt" &&
-                    <ProductHuntTemplate title={title} records={records} likeHelperData={likeHelperData} />
-                }
+                    {!loading && !error && records.length > 0 && template === "template_002_producthunt" &&
+                        <ProductHuntTemplate title={title} records={records} likeHelperData={likeHelperData} />
+                    }
 
-                {!loading && !error && records.length > 0 && template === "template_001_blog" &&
-                    <BlogTemplate title={title} records={records} likeHelperData={likeHelperData} />
-                }
+                    {!loading && !error && records.length > 0 && template === "template_001_blog" &&
+                        <BlogTemplate title={title} records={records} likeHelperData={likeHelperData} />
+                    }
 
-                {!loading && !error && records.length > 0 && template === "template_003_featurerequest" &&
-                    <FeatureRequestTemplate title={title} records={records} likeHelperData={likeHelperData} airtableApiKey={airtableApiKey} airtableBaseId={airtableBaseId} />
-                }
+                    {!loading && !error && records.length > 0 && template === "template_003_featurerequest" &&
+                        <FeatureRequestTemplate title={title} records={records} likeHelperData={likeHelperData} airtableApiKey={airtableApiKey} airtableBaseId={airtableBaseId} />
+                    }
 
 
-            </div>
+                </div>
         </LayoutPublic>
     )
 }

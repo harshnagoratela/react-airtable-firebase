@@ -3,8 +3,6 @@ import { Badge } from 'react-bootstrap';
 import HeartButton from '../../../HeartButton'
 import Airtable from 'airtable';
 import Loader from 'react-loader-spinner';
-import './component.styles.css';
-
 
 class FeatureRequest extends React.Component {
 
