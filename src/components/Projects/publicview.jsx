@@ -80,42 +80,6 @@ const ProjectPublicView = props => {
                     setAirtableApiKey(snapshotVal.apiKey)
                     setAirtableBaseId(snapshotVal.baseId)
 
-                    //Get "Settings" from Airtable
-                    base('Settings').select({
-                        view: "Grid view"
-                    }).eachPage(function page(records, fetchNextPage) {
-                        records.forEach(function (record) {
-                            let variable = record.get('setting');
-                            let value = record.get('value');
-                            let attachment = record.get('attachment');
-                            console.log(record)
-                            console.log("++++++" + variable + " = " + value)
-                            if (variable === "title") {
-                                setSettingsTitle(value);
-                            } else if (variable === "subtitle") {
-                                setSettingsSubTitle(value);
-                            } else if (variable === "metadescription") {
-                                setSettingsMetaDescription(value);
-                            } else if (variable === "metakeywords") {
-                                setSettingsMetaKeywords(value);
-                            } else if (variable === "primarycolor") {
-                                setSettingsPrimaryColor(value);
-                            } else if (variable === "fonts") {
-                                setSettingsFonts(value);
-                            } else if (variable === "logo") {
-                                setSettingsLogo(attachment);
-                            }
-                            console.log("+++++++++++++++++");
-                            console.log(settingsPrimaryColor);
-                            console.log(settingsFonts);
-                        });
-                        fetchNextPage();
-                        
-                    }, function done(err) {
-                        if (err) { console.error("ERROR while fetching settings : " + err + ", So using default settings..."); return; }
-                        
-                    });
-
                     //get main data from Airtable
                     base(snapshotVal.tableName).select({
                         view: viewName,
@@ -127,12 +91,49 @@ const ProjectPublicView = props => {
                             console.log(records)
                             fetchNextPage();
                         }
-                    ).then(getVotesData());
-
-                    
+                    )
+                    .then(getVotesData())
+                    .then(getAirtableSettingsData(base))
+                    .then(setLoading(false));
                 }
             }, [props.userid, props.slug]);
     }, [loading, template]);
+
+    const getAirtableSettingsData = (base) => {
+        //Get "Settings" from Airtable
+        base('Settings').select({
+            view: "Grid view"
+        }).eachPage(function page(records, fetchNextPage) {
+            records.forEach(function (record) {
+                let variable = record.get('setting');
+                let value = record.get('value');
+                let attachment = record.get('attachment');
+                console.log(record)
+                console.log("++++++" + variable + " = " + value)
+                if (variable === "title") {
+                    setSettingsTitle(value);
+                } else if (variable === "subtitle") {
+                    setSettingsSubTitle(value);
+                } else if (variable === "metadescription") {
+                    setSettingsMetaDescription(value);
+                } else if (variable === "metakeywords") {
+                    setSettingsMetaKeywords(value);
+                } else if (variable === "primarycolor") {
+                    setSettingsPrimaryColor(value);
+                } else if (variable === "fonts") {
+                    setSettingsFonts(value);
+                } else if (variable === "logo") {
+                    setSettingsLogo(attachment);
+                }
+                console.log("+++++++++++++++++");
+                console.log(settingsPrimaryColor);
+                console.log(settingsFonts);
+            });
+            fetchNextPage();
+        }, function done(err) {
+            if (err) { console.error("ERROR while fetching settings : " + err + ", So using default settings..."); return; }
+        });
+    };
 
     const getVotesData = () => {
         //getting votes data 
@@ -145,7 +146,7 @@ const ProjectPublicView = props => {
                 console.log("******* Votes data")
                 console.log(snapshotVal)
                 if (snapshotVal) setVotes(snapshotVal);
-                setLoading(false);
+                
             });
     };
 
@@ -198,35 +199,35 @@ const ProjectPublicView = props => {
                 <link rel="stylesheet" href={`/templatecss/${template}.css`} />
             </Helmet>
             <div className="App">
-                    {loading &&
-                        <div className="text-center"><Loader type="Bars" color="#00BFFF" height={30} width={80} /></div>
-                    }
+                {loading &&
+                    <div className="text-center"><Loader type="Bars" color="#00BFFF" height={30} width={80} /></div>
+                }
 
-                    {error &&
-                        <Alert variant="danger">
-                            <Alert.Heading>Error(s) Encountered:</Alert.Heading>
-                            <p>{error}</p>
-                            <hr />
-                            <p className="mb-0">
-                                Please contact administrator to rectify it and re-visit this page again
+                {error &&
+                    <Alert variant="danger">
+                        <Alert.Heading>Error(s) Encountered:</Alert.Heading>
+                        <p>{error}</p>
+                        <hr />
+                        <p className="mb-0">
+                            Please contact administrator to rectify it and re-visit this page again
                         </p>
-                        </Alert>
-                    }
+                    </Alert>
+                }
 
-                    {!loading && !error && records.length > 0 && template === "template_002_producthunt" && 
-                        <ProductHuntTemplate title={settingsTitle || title} records={records} likeHelperData={likeHelperData} color={settingsPrimaryColor} logo={settingsLogo} />
-                    }
+                {!loading && !error && records.length > 0 && template === "template_002_producthunt" &&
+                    <ProductHuntTemplate title={settingsTitle || title} records={records} likeHelperData={likeHelperData} color={settingsPrimaryColor} logo={settingsLogo} />
+                }
 
-                    {!loading && !error && records.length > 0 && template === "template_001_blog" &&
-                        <BlogTemplate title={settingsTitle || title} records={records} likeHelperData={likeHelperData} />
-                    }
+                {!loading && !error && records.length > 0 && template === "template_001_blog" &&
+                    <BlogTemplate title={settingsTitle || title} records={records} likeHelperData={likeHelperData} />
+                }
 
-                    {!loading && !error && records.length > 0 && template === "template_003_featurerequest" &&
-                        <FeatureRequestTemplate title={settingsTitle || title} records={records} likeHelperData={likeHelperData} airtableApiKey={airtableApiKey} airtableBaseId={airtableBaseId} />
-                    }
+                {!loading && !error && records.length > 0 && template === "template_003_featurerequest" &&
+                    <FeatureRequestTemplate title={settingsTitle || title} records={records} likeHelperData={likeHelperData} airtableApiKey={airtableApiKey} airtableBaseId={airtableBaseId} />
+                }
 
 
-                </div>
+            </div>
         </LayoutPublic>
     )
 }
