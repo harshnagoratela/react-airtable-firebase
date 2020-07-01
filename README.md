@@ -16,7 +16,7 @@ It uses [Gatsby Plugin Firebase](https://www.gatsbyjs.org/packages/gatsby-plugin
 
 How it works in short:
 - Gatsby renders all unauthenticated routes as usual static pages.
-- Authenticated routes are whitelisted as client-only (in this starter all dynamic pages are under the path 'mysite.com/app/*').
+- Authenticated routes are whitelisted as client-only (in this starter all dynamic pages are under the path 'mysite.com/dashboard/*').
 - Logged-out users are redirected to the login page if they attempt to visit private routes.
 - Logged-in users will see their private content.
 
